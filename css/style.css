@@ -1,0 +1,15 @@
+.center {
+  text-align: center;
+}
+
+.select {
+  padding: 50px;
+  background: beige;
+  transition: tranform .2s;
+  display: inline;
+  margin-left: 20px;
+}
+
+.select:hover {
+  transform: scale(1.3);
+}
