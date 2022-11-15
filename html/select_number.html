@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <title>Select your guess</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
     <script src="../js/select_number.js"></script>
 </head>
 <body>
-<h2 class="center">Select the number on which you want to stake your Eth:</h2>
-<button id="1" class="select">1</button>
-<button id="2" class="select">2</button>
-<button id="3" class="select">3</button>
-<button id="4" class="select">4</button>
-<button id="5" class="select">5</button>
-<button id="6" class="select">6</button>
-<button id="7" class="select">7</button>
-<button id="8" class="select">8</button>
-<button id="9" class="select">9</button>
-<button id="10" class="select">10</button>
-
+    <h2 class="center">Select the number on which you want to stake your Eth:</h2>
+    <button id="btn-1" class="select" onclick="select_number(1)">1</button>
+    <button id="btn-2" class="select" onclick="select_number(2)">2</button>
+    <button id="btn-3" class="select" onclick="select_number(3)">3</button>
+    <button id="btn-4" class="select" onclick="select_number(4)">4</button>
+    <button id="btn-5" class="select" onclick="select_number(5)">5</button>
+    <button id="btn-6" class="select" onclick="select_number(6)">6</button>
+    <button id="btn-7" class="select" onclick="select_number(7)">7</button>
+    <button id="btn-8" class="select" onclick="select_number(8)">8</button>
+    <button id="btn-9" class="select" onclick="select_number(9)">9</button>
+    <button id="btn-10" class="select" onclick="select_number(10)">10</button>
 </body>
 </html>

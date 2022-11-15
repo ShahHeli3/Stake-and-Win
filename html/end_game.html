@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>End Game</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../js/end_game.js"></script>
+</head>
+<body>
+    <h2 id="game-open-message" class="center">Wait till the owner ends the game...</h2>
+    <h2 id="game-close-message" class="center" style="display: none">Game End</h2>
+    <div>
+        <div class="division odd">
+            <h3><u>Winning Details</u></h3>
+            <p id="winning-amount-wei"><b>Winning amount in wei: </b></p>
+            <p id="winning-amount-eth"><b>Winning amount in eth: </b></p>
+        </div>
+        <div class="division even">
+            <h3><u>Game Details</u></h3>
+            <p id="game-state"><b>Game State: </b></p>
+            <p id="total-players"><b>Total Players: </b></p>
+        </div>
+        <div class="division odd">
+            <h3><u>Contract Details</u></h3>
+            <p id="contract-address"><b>Contract Address: </b></p>
+            <p id="contract-owner"><b>Contract Owner: </b></p>
+        </div>
+    </div>
+
+    <br>
+    <div class="list" id="players-list">
+        <h3>Players in the current round:</h3>
+        <div class="division-two" id="player-address">
+            <h4><u>Player's Address</u></h4>
+        </div>
+        <div class="division-two" id="player-number">
+            <h4><u>Selected Number</u></h4>
+        </div>
+    </div>
+</body>
+</html>

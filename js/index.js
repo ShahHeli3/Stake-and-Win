@@ -1,11 +1,10 @@
 const web3 = new Web3(Web3.givenProvider)
 let account = window.ethereum.selectedAddress
 let balance = null
-let chainId = null
 let abi = null
 let contract = null
 let gameEntryFee = null
-let contractAddress = null
+let contractAddress = "0xafE06092437c528444d3ae370475BfC6f89823fC"
 
 $(document).ready(function () {
     fetch("./contract_abi.json").then(
@@ -14,20 +13,16 @@ $(document).ready(function () {
         }
     ).then(data => {
         abi = data;
-        contract = new web3.eth.Contract(abi, "0xafE06092437c528444d3ae370475BfC6f89823fC");
-        console.log("contract->", contract.methods)
+        contract = new web3.eth.Contract(abi, contractAddress);
     })
     setTimeout(async function () {
         gameEntryFee = await contract.methods.entryFee().call()
-        contractAddress = contract._address
-        console.log(gameEntryFee, contractAddress)
 
         if (!window.ethereum) {
             document.getElementById('metamask-extension-not-installed').style.display = 'block'
             document.getElementById('connect-wallet').style.display = 'none'
         }
     }, 500)
-
 })
 
 async function connectWallet() {
@@ -50,7 +45,6 @@ async function connectWallet() {
 
         if (accounts) {
             account = await web3.eth.getAccounts()
-            console.log(account[0])
             document.getElementById('connected-wallet').innerText = account
             document.getElementById('wallet-balance').innerText = await getWalletBalance()
             document.getElementById('connect-wallet').style.display = 'none'
@@ -99,9 +93,9 @@ async function joinGame() {
                 console.log(error)
             }
         })
-        .then(async function (receipt) {
+        .then(async function () {
             document.getElementById('wallet-balance').innerText = await getWalletBalance()
-            window.location.href = '../StakeAndWin/html/select_number.html'
+            window.location.replace('../StakeAndWin/html/select_number.html')
         });
 }
 
