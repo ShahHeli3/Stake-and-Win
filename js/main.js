@@ -1,5 +1,5 @@
 const web3 = new Web3(Web3.givenProvider)
-let contractAddress = "0xafE06092437c528444d3ae370475BfC6f89823fC"
+let contractAddress = "0x2Ff4Ee5974b68a349C3A2243D1bd9910377640bC"
 let contract = null
 let account = null
 let gameState = null
@@ -16,7 +16,7 @@ $(document).ready(function () {
         //check the game state
         gameState = await contract.methods.game_state().call()
 
-        if (gameState === "1"){
+        if (gameState === "1") {
             window.location.replace('../html/end_game.html')
         }
 
@@ -39,13 +39,14 @@ window.ethereum.on('accountsChanged', async function () {
     account = await web3.eth.getAccounts()
 
     //if the user disconnects all the accounts from MetaMask
-    if (account.length === 0) {
-        window.location.replace('../html/index.html')
-    } else {
-        await verifyPlayer()
-        document.getElementById('connected-wallet').innerText = account
-        document.getElementById('wallet-balance').innerText = await getWalletBalance()
-    }
+    // if (account.length === 0) {
+    window.location.replace('../html/index.html')
+    // } else {
+    //     window.location.reload()
+    //     // await verifyPlayer()
+    //     // document.getElementById('connected-wallet').innerText = account
+    //     // document.getElementById('wallet-balance').innerText = await getWalletBalance()
+    // }
 })
 
 // if the user switches the chain

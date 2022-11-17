@@ -5,24 +5,28 @@ $(document).ready(function () {
         } else {
             //timeout for main.js to fetch the contract
             setTimeout(async function () {
-                console.log(contract)
                 await getConnectedAccount()
+                owner = await contract.methods.owner().call()
+
+                if (account[0] === owner) {
+                    document.getElementById('go-to-end-game').style.display = 'block'
+                }
             }, 100)
         }
     }
 )
 
-async function verifyPlayer() {
-    counter = await contract.methods.counter().call()
-
-    for (let i = 1; i < counter; i++) {
-        player = await contract.methods.players(i).call()
-
-        if (player === account[0]) {
-            window.location.replace('../html/end_game.html')
-        }
-    }
-}
+// async function verifyPlayer() {
+//     counter = await contract.methods.counter().call()
+//
+//     for (let i = 1; i < counter; i++) {
+//         player = await contract.methods.players(i).call()
+//
+//         if (player === account[0]) {
+//             window.location.replace('../html/end_game.html')
+//         }
+//     }
+// }
 
 async function getConnectedAccount() {
     account = await web3.eth.getAccounts()
@@ -64,15 +68,14 @@ async function connectWallet() {
                 })
             }
         })
-
         if (accounts) {
+            console.log("connected")
             Swal.fire({
                 title: 'Connection Successful',
                 text: 'MetaMask Wallet Connected',
                 icon: 'success',
-            }).then(async () => {
-                await verifyPlayer()
-                await getConnectedAccount()
+            }).then( () => {
+                window.location.reload()
             })
 
         }
@@ -110,8 +113,8 @@ async function joinGame() {
         .once('transactionHash', function (hash) {
             transaction_status = Swal.fire({
                 title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + 'Please wait till we confirm it.' +
-                    'Do not close this page',
+                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
+                    ' Do not close this page',
                 icon: 'info',
                 showConfirmButton: false
             })
@@ -123,8 +126,10 @@ async function joinGame() {
             if (receipt.status === true) {
                 Swal.fire({
                     title: 'Transaction Confirmed',
-                    text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful',
+                    text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful',
                     icon: 'success',
+                }).then(() => {
+                    window.location.replace('../html/select_number.html')
                 })
             } else {
                 Swal.fire({
@@ -152,40 +157,7 @@ async function joinGame() {
                 })
             }
         })
-        .then(async function () {
-            window.location.replace('../html/select_number.html')
-        });
+        // .then(async function () {
+        //     window.location.replace('../html/select_number.html')
+        // });
 }
-
-
-// async function transferOwnership() {
-//     getOwner()
-//     setTimeout(function () {
-//         if (account === owner) {
-//             new_owner = document.getElementById('transfer-ownership-to').value
-//             if (new_owner.length === 0) {
-//                 alert("Please enter an address in the input box")
-//             } else {
-//                 $.ajax({
-//                     method: 'POST',
-//                     url: '/transfer_ownership',
-//                     headers: {
-//                         "X-CSRFToken": getCookie("csrftoken")
-//                     },
-//                     data: {
-//                         'new_owner': new_owner,
-//                         'chain_id': chainId
-//                     },
-//                     success: function (response) {
-//                         alert(response['response'])
-//                     }
-//                 })
-//             }
-//         } else {
-//             alert("Only the owner has access to this function")
-//         }
-//     }, 1500);
-// }
-//
-
-

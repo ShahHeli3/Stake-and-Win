@@ -8,7 +8,7 @@ $(document).ready(function () {
             }
             playerAddress = account[0]
             console.log(playerAddress)
-        }, 100)
+        }, 500)
     }
 )
 
@@ -40,15 +40,17 @@ function select_number(selected_number) {
                             text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful',
                             icon: 'success',
                             confirmButtonText: 'See Game Status'
+                        }).then(() => {
+                            window.location.replace("./end_game.html")
                         })
-                        window.location.replace("./end_game.html")
                     } else {
                         Swal.fire({
                             title: 'Transaction Error',
                             text: 'Oops! There was some error in completing your transaction. Please select a number again',
                             icon: 'error',
+                        }).then(() => {
+                            window.location.reload()
                         })
-                        window.location.reload()
                     }
                 })
                 .on('error', function (error) {
