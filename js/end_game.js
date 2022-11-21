@@ -1,50 +1,38 @@
-const web3 = new Web3(Web3.givenProvider)
-let contractAddress = "0x2Ff4Ee5974b68a349C3A2243D1bd9910377640bC"
-let contract = null
-let gameState = null
-let account = null
-let owner = null
-let counter = null
 let selectedNumbers = []
 let players = []
 let winners = []
+let winningNumber = null
+let autoReload = true
 
 // reload page after 15s
 window.setTimeout(function () {
-    if (gameState === "0") {
+    if (autoReload && gameState === "0") {
         window.location.reload();
     }
-}, 15000);
+}, 30000);
 
 $(document).ready(function () {
-    fetch("../contract_abi.json").then(
-        response => {
-            return response.json()
-        }
-    ).then(async abi => {
-        contract = new web3.eth.Contract(abi, contractAddress);
-        gameState = await contract.methods.game_state().call()
 
-        if (gameState === "1") {
-            document.getElementById('game-open-message').style.display = "none"
-            document.getElementById('game-end-message').style.display = "block"
-            document.getElementById('previous-game-results').style.display = "none"
-            document.getElementById('current-game-results').style.display = "block"
-        }
+        //timeout for verify_player.js to fetch the contract
+        setTimeout(async function () {
+            if (gameState === "1") {
+                document.getElementById('game-open-message').style.display = "none"
+                document.getElementById('game-end-message').style.display = "block"
+                document.getElementById('previous-game-results').style.display = "none"
+                document.getElementById('current-game-results').style.display = "block"
+            }
 
-        account = await web3.eth.getAccounts()
-        owner = await contract.methods.owner().call()
+            if (account[0] === owner) {
+                document.getElementById('only-owner').style.display = 'block'
+            }
 
-        if (account[0] === owner) {
-            document.getElementById('end-game-btn').style.display = 'block'
-        }
-
-        await getWinningDetails()
-        await getContractDetails()
-        await getGameDetails()
-        await getWinnerDetails()
-    })
-})
+            await getWinningDetails()
+            await getContractDetails()
+            await getGameDetails()
+            await getWinnerDetails()
+        }, 2000)
+    }
+)
 
 async function getWinningDetails() {
     let contractBalance = await web3.eth.getBalance(contractAddress)
@@ -56,20 +44,16 @@ async function getWinningDetails() {
 
 async function getContractDetails() {
     document.getElementById('contract-address').append(contractAddress)
-
-    let contractOwner = await contract.methods.owner().call()
-    document.getElementById('contract-owner').append(contractOwner)
+    document.getElementById('contract-owner').append(owner)
 }
 
 async function getGameDetails() {
-
     if (gameState === "0") {
         document.getElementById('game-state').append("OPEN")
     } else {
         document.getElementById('game-state').append("CLOSED")
     }
 
-    counter = await contract.methods.counter().call()
     document.getElementById('total-players').append(counter - 1)
 
     for (let i = 1; i < counter; i++) {
@@ -92,7 +76,7 @@ async function getWinnerDetails() {
     winners = await contract.methods.getWinnersList().call()
 
     if (winners.length > 0) {
-        for (let i = 0; i < winners.length; i++){
+        for (let i = 0; i < winners.length; i++) {
             $('#winner-list').append("<p>" + winners[i] + "</p>")
         }
     } else {
@@ -101,6 +85,7 @@ async function getWinnerDetails() {
 }
 
 async function endGame() {
+    autoReload = false
     //only owner can end the game
     if (account[0] !== owner) {
         Swal.fire({
@@ -123,70 +108,19 @@ async function endGame() {
         })
     }
 
-    //cannot end game if game state is already closed
-    // if (gameState === "1") {
-    //     Swal.fire({
-    //         title: 'Calculating winner',
-    //         text: 'Game state is already closed. Wait till the winner is decided',
-    //         icon: 'info'
-    //     }).then(async () => {
-    //         window.location.reload()
-    //     })
-    // }
+    // cannot end game if game state is already closed
+    if (gameState === "1") {
+        Swal.fire({
+            title: 'Calculating winner',
+            text: 'Game state is already closed. Wait till the winner is decided',
+            icon: 'info'
+        }).then(async () => {
+            window.location.reload()
+        })
+    }
 
+    document.getElementById('end-game-body').style.pointerEvents = 'none'
     await closeGameState()
-    selectWinner()
-    console.log(winners)
-
-    //call endgame function
-    contract.methods.endGame(winners).send({'from': owner})
-        .on('transactionHash', function (hash) {
-            Swal.fire({
-                title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + 'Please wait till we confirm it.' +
-                    'Do not close this page.',
-                icon: 'info',
-                showConfirmButton: false
-            })
-            document.getElementById('end-game-btn').style.pointerEvents = 'none'
-        }).on('receipt', function (receipt) {
-        if (receipt.status === true) {
-            Swal.fire({
-                title: 'Transaction Confirmed',
-                text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful. GAME ENDED!',
-                icon: 'success',
-            }).then(() => {
-                window.location.reload()
-            })
-        } else {
-            Swal.fire({
-                title: 'Transaction Error',
-                text: 'Oops! There was some error in completing your transaction. Please try again',
-                icon: 'error',
-            }).then(() => {
-                window.location.reload()
-            })
-        }
-    }).on('error', function (error) {
-        if (error.code === 4001) {
-            Swal.fire({
-                title: 'Transaction Rejected',
-                text: 'You need to confirm the transaction to end the game.',
-                icon: 'error',
-            }).then(() => {
-                window.location.reload()
-            })
-        } else {
-            console.log(error)
-            Swal.fire({
-                title: 'Transaction Error',
-                text: 'Oops! There was some error in completing your transaction. Please try again',
-                icon: 'error',
-            }).then(() => {
-                window.location.reload()
-            })
-        }
-    });
 }
 
 async function closeGameState() {
@@ -194,18 +128,21 @@ async function closeGameState() {
         .on('transactionHash', function (hash) {
             Swal.fire({
                 title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + 'Please wait till we confirm it.' +
+                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
                     'Do not close this page.',
                 icon: 'info',
                 showConfirmButton: false
             })
-            document.getElementById('end-game-btn').style.pointerEvents = 'none'
         }).on('receipt', function (receipt) {
+        document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (receipt.status === true) {
             Swal.fire({
                 title: 'Transaction Confirmed',
-                text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful. Game closed.',
+                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. Game closed.',
                 icon: 'success',
+            }).then(() => {
+                document.getElementById('end-game-body').style.pointerEvents = 'none'
+                selectWinner()
             })
         } else {
             Swal.fire({
@@ -217,6 +154,7 @@ async function closeGameState() {
             })
         }
     }).on('error', function (error) {
+        document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (error.code === 4001) {
             Swal.fire({
                 title: 'Transaction Rejected',
@@ -238,10 +176,11 @@ async function closeGameState() {
     });
 }
 
-function selectWinner() {
-    // let randomNumber = Math.floor(Math.random() * 10) + 1;
-    let randomNumber = 3
-    let winningNumber = randomNumber.toString()
+async function selectWinner() {
+    let randomNumber = Math.floor(Math.random() * 10) + 1;
+    console.log("RANDOM---->", randomNumber)
+    // let randomNumber = 3
+    winningNumber = randomNumber.toString()
     console.log(winningNumber)
 
     //selecting winners
@@ -250,4 +189,60 @@ function selectWinner() {
             winners.push(players[i])
         }
     }
+
+    await callEndGameFromContract()
+}
+
+async function callEndGameFromContract() {
+    //call endgame function
+    contract.methods.endGame(winners, winningNumber).send({'from': owner})
+        .on('transactionHash', function (hash) {
+            Swal.fire({
+                title: 'Transaction status',
+                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
+                    'Do not close this page.',
+                icon: 'info',
+                showConfirmButton: false
+            })
+            document.getElementById('end-game-btn').style.pointerEvents = 'none'
+        }).on('receipt', function (receipt) {
+        document.getElementById('end-game-body').style.pointerEvents = 'auto'
+        if (receipt.status === true) {
+            Swal.fire({
+                title: 'Transaction Confirmed',
+                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. GAME ENDED!',
+                icon: 'success',
+            }).then(() => {
+                window.location.reload()
+            })
+        } else {
+            Swal.fire({
+                title: 'Transaction Error',
+                text: 'Oops! There was some error in completing your transaction. Please try again',
+                icon: 'error',
+            }).then(() => {
+                window.location.reload()
+            })
+        }
+    }).on('error', function (error) {
+        document.getElementById('end-game-body').style.pointerEvents = 'auto'
+        if (error.code === 4001) {
+            Swal.fire({
+                title: 'Transaction Rejected',
+                text: 'You need to confirm the transaction to end the game.',
+                icon: 'error',
+            }).then(() => {
+                window.location.reload()
+            })
+        } else {
+            console.log(error)
+            Swal.fire({
+                title: 'Transaction Error',
+                text: 'Oops! There was some error in completing your transaction. Please try again',
+                icon: 'error',
+            }).then(() => {
+                window.location.reload()
+            })
+        }
+    });
 }

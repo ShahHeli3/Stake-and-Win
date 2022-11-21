@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/verify_player.js"></script>
     <script src="../js/index.js"></script>
 </head>
 <body class="center" id="index-body">
@@ -41,6 +42,10 @@
     </div>
     <br>
     <a href="about_game.html"><button id="game">About the game</button></a>
-    <a href="end_game.html"><button id="go-to-end-game" style="display: none">See Game Status</button></a>
+    <br><br>
+    <div id="only-owner" style="display: none">
+        <a href="end_game.html"><button id="go-to-end-game">See Game Status</button></a>
+        <a href="transfer_ownership.html"><button id="go-to-transfer-ownership">Transfer Ownership</button></a>
+    </div>
 </body>
 </html>

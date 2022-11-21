@@ -3,30 +3,17 @@ $(document).ready(function () {
             document.getElementById('metamask-extension-not-installed').style.display = 'block'
             document.getElementById('connect-wallet').style.display = 'none'
         } else {
-            //timeout for main.js to fetch the contract
+            //timeout for verify_player.js to fetch the contract
             setTimeout(async function () {
                 await getConnectedAccount()
-                owner = await contract.methods.owner().call()
 
                 if (account[0] === owner) {
-                    document.getElementById('go-to-end-game').style.display = 'block'
+                    document.getElementById('only-owner').style.display = 'block'
                 }
-            }, 100)
+            }, 600)
         }
     }
 )
-
-// async function verifyPlayer() {
-//     counter = await contract.methods.counter().call()
-//
-//     for (let i = 1; i < counter; i++) {
-//         player = await contract.methods.players(i).call()
-//
-//         if (player === account[0]) {
-//             window.location.replace('../html/end_game.html')
-//         }
-//     }
-// }
 
 async function getConnectedAccount() {
     account = await web3.eth.getAccounts()
@@ -69,12 +56,11 @@ async function connectWallet() {
             }
         })
         if (accounts) {
-            console.log("connected")
             Swal.fire({
                 title: 'Connection Successful',
                 text: 'MetaMask Wallet Connected',
                 icon: 'success',
-            }).then( () => {
+            }).then(() => {
                 window.location.reload()
             })
 
@@ -97,7 +83,6 @@ async function getWalletBalance() {
 
 //to pay the entry fee to join the game
 async function joinGame() {
-    // verifyPlayer()
     const gameEntryFee = await contract.methods.entryFee().call()
 
     const transactionParameters = {
@@ -157,7 +142,4 @@ async function joinGame() {
                 })
             }
         })
-        // .then(async function () {
-        //     window.location.replace('../html/select_number.html')
-        // });
 }

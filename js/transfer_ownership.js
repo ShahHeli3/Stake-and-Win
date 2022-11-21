@@ -1,0 +1,95 @@
+$(document).ready(function () {
+    setTimeout(async function () {
+        //validate owner
+        if (account[0] !== owner) {
+            Swal.fire({
+                title: 'Unauthorized',
+                text: 'Only the owner has access to this page',
+                icon: 'error'
+            }).then(() => {
+                window.location.replace('../html/index.html')
+            })
+        }
+    }, 1000)
+})
+
+function transferOwnership() {
+    let new_owner = document.getElementById('transfer-ownership-to').value
+
+    //check if the field is empty
+    if (new_owner.length === 0) {
+        Swal.fire({
+            title: 'Address Field Empty',
+            text: 'Please enter an address to transfer the ownership',
+            icon: 'warning'
+        })
+    } else {
+        //check if the address is valid
+        if (web3.utils.isAddress(new_owner) === false) {
+            Swal.fire({
+                title: 'Invalid Address',
+                text: 'Please enter a valid address to transfer the ownership',
+                icon: 'error'
+            })
+        } else {
+            if (new_owner === owner) {
+                Swal.fire({
+                    title: 'Invalid Request',
+                    text: 'You are already the owner',
+                    icon: 'info'
+                })
+            } else {
+                //send the transfer ownership transaction
+                contract.methods.transfer(new_owner).send({'from': owner})
+                    .on('transactionHash', function (hash) {
+                        Swal.fire({
+                            title: 'Transaction status',
+                            text: 'Your transaction is pending at ' + hash + 'Please wait till we confirm it.' +
+                                'Do not close this page.',
+                            icon: 'info',
+                            showConfirmButton: false
+                        })
+                        document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
+                    }).on('receipt', function (receipt) {
+                    if (receipt.status === true) {
+                        Swal.fire({
+                            title: 'Transaction Confirmed',
+                            text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful. ' +
+                                ' Ownership Transferred!',
+                            icon: 'success',
+                        }).then(() => {
+                            window.location.replace("../html/index.html")
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Transaction Error',
+                            text: 'Oops! There was some error in completing your transaction. Please try again',
+                            icon: 'error',
+                        }).then(() => {
+                            window.location.reload()
+                        })
+                    }
+                }).on('error', function (error) {
+                    if (error.code === 4001) {
+                        Swal.fire({
+                            title: 'Transaction Rejected',
+                            text: 'You need to confirm the transaction to transfer the ownership.',
+                            icon: 'error',
+                        }).then(() => {
+                            window.location.reload()
+                        })
+                    } else {
+                        console.log(error)
+                        Swal.fire({
+                            title: 'Transaction Error',
+                            text: 'Oops! There was some error in completing your transaction. Please try again',
+                            icon: 'error',
+                        }).then(() => {
+                            window.location.reload()
+                        })
+                    }
+                });
+            }
+        }
+    }
+}
