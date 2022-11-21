@@ -39,56 +39,72 @@ function transferOwnership() {
                     icon: 'info'
                 })
             } else {
-                //send the transfer ownership transaction
-                contract.methods.transfer(new_owner).send({'from': owner})
-                    .on('transactionHash', function (hash) {
-                        Swal.fire({
-                            title: 'Transaction status',
-                            text: 'Your transaction is pending at ' + hash + 'Please wait till we confirm it.' +
-                                'Do not close this page.',
-                            icon: 'info',
-                            showConfirmButton: false
-                        })
-                        document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
-                    }).on('receipt', function (receipt) {
-                    if (receipt.status === true) {
-                        Swal.fire({
-                            title: 'Transaction Confirmed',
-                            text: 'Congratulations! Your transaction at: ' + receipt.transactionHash + 'was successful. ' +
-                                ' Ownership Transferred!',
-                            icon: 'success',
-                        }).then(() => {
-                            window.location.replace("../html/index.html")
-                        })
+                Swal.fire({
+                    title: 'Confirm Ownership Transfer',
+                    text: 'Are you sure you want to transfer the ownership to ' + new_owner,
+                    icon: 'info',
+                    showDenyButton: true,
+                    confirmButtonText: "Yes, transfer.",
+                    denyButtonText: "No"
+                }).then((response) => {
+                    document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
+
+                    if (response.isConfirmed) {
+                        //send the transfer ownership transaction
+                        contract.methods.transferOwnership(new_owner).send({'from': owner})
+                            .on('transactionHash', function (hash) {
+                                Swal.fire({
+                                    title: 'Transferring Ownership',
+                                    text: 'Your transaction is pending at ' + hash + 'Please wait till we complete the transfer.' +
+                                        ' Do not close this page.',
+                                    icon: 'info',
+                                    showConfirmButton: false
+                                })
+                            }).on('receipt', function (receipt) {
+                            document.getElementById('transfer-ownership-body').style.pointerEvents = 'auto'
+                            if (receipt.status === true) {
+                                Swal.fire({
+                                    title: 'Transaction Confirmed',
+                                    text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
+                                        'Ownership transferred to ' + new_owner,
+                                    icon: 'success',
+                                }).then(() => {
+                                    window.location.replace("../html/index.html")
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Transaction Error',
+                                    text: 'Oops! There was some error in completing your transaction. Please try again',
+                                    icon: 'error',
+                                }).then(() => {
+                                    window.location.reload()
+                                })
+                            }
+                        }).on('error', function (error) {
+                            document.getElementById('transfer-ownership-body').style.pointerEvents = 'auto'
+                            if (error.code === 4001) {
+                                Swal.fire({
+                                    title: 'Transaction Rejected',
+                                    text: 'You need to confirm the transaction to transfer the ownership.',
+                                    icon: 'error',
+                                }).then(() => {
+                                    window.location.reload()
+                                })
+                            } else {
+                                console.log(error)
+                                Swal.fire({
+                                    title: 'Transaction Error',
+                                    text: 'Oops! There was some error in completing your transaction. Please try again',
+                                    icon: 'error',
+                                }).then(() => {
+                                    window.location.reload()
+                                })
+                            }
+                        });
                     } else {
-                        Swal.fire({
-                            title: 'Transaction Error',
-                            text: 'Oops! There was some error in completing your transaction. Please try again',
-                            icon: 'error',
-                        }).then(() => {
-                            window.location.reload()
-                        })
+                        window.location.reload()
                     }
-                }).on('error', function (error) {
-                    if (error.code === 4001) {
-                        Swal.fire({
-                            title: 'Transaction Rejected',
-                            text: 'You need to confirm the transaction to transfer the ownership.',
-                            icon: 'error',
-                        }).then(() => {
-                            window.location.reload()
-                        })
-                    } else {
-                        console.log(error)
-                        Swal.fire({
-                            title: 'Transaction Error',
-                            text: 'Oops! There was some error in completing your transaction. Please try again',
-                            icon: 'error',
-                        }).then(() => {
-                            window.location.reload()
-                        })
-                    }
-                });
+                })
             }
         }
     }

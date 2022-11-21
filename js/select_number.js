@@ -6,12 +6,12 @@ $(document).ready(function () {
             if (account.length === 0) {
                 window.location.replace('../html/index.html')
             }
-            playerAddress = account[0]
-        }, 2000)
+        }, 1000)
     }
 )
 
-function select_number(selected_number) {
+async function select_number(selected_number) {
+    await verifyPlayer()
     Swal.fire({
         title: 'Confirm your selection',
         text: 'Please confirm your selection',
@@ -21,13 +21,16 @@ function select_number(selected_number) {
         icon: 'question'
     }).then((result) => {
         document.getElementById('select-number-body').style.pointerEvents = 'none'
+
         if (result.isConfirmed) {
             //send add player transaction
-            contract.methods.addPlayer(playerAddress, selected_number).send({from: playerAddress,})
+            playerAddress = account[0]
+
+            contract.methods.addPlayer(playerAddress, selected_number).send({from: playerAddress, value: gameEntryFee})
                 .on('transactionHash', function (hash) {
                     Swal.fire({
-                        title: 'Transaction status',
-                        text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it. ' +
+                        title: 'Adding you to the game',
+                        text: 'Your transaction is pending at ' + hash + '. Please wait till we add you. ' +
                             'Do not close this page. You will soon be redirected to the game',
                         icon: 'info',
                         showConfirmButton: false
@@ -37,8 +40,9 @@ function select_number(selected_number) {
                     document.getElementById('select-number-body').style.pointerEvents = 'auto'
                     if (receipt.status === true) {
                         Swal.fire({
-                            title: 'Transaction Confirmed',
-                            text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful',
+                            title: 'Transaction successful',
+                            text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
+                                'You are added to the game',
                             icon: 'success',
                             confirmButtonText: 'See Game Status'
                         }).then(() => {
@@ -81,3 +85,8 @@ function select_number(selected_number) {
         }
     })
 }
+
+// if the user changes the account from MetaMask or disconnects
+window.ethereum.on('accountsChanged', async function () {
+    window.location.replace('../html/index.html')
+})

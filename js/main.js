@@ -1,10 +1,11 @@
 const web3 = new Web3(Web3.givenProvider)
-let contractAddress = "0x2Ff4Ee5974b68a349C3A2243D1bd9910377640bC"
+let contractAddress = "0xafd4e59fFA9608D0dEAd962791aA99EDfEF27e3a"
 let contract = null
 let account = null
 let gameState = null
 let counter = null
 let owner = null
+let gameEntryFee = null
 
 $(document).ready(function () {
     fetch("../contract_abi.json").then(
@@ -14,15 +15,11 @@ $(document).ready(function () {
     ).then(async abi => {
         contract = new web3.eth.Contract(abi, contractAddress);
         account = await web3.eth.getAccounts()
+        owner = await contract.methods.owner().call()
         counter = await contract.methods.counter().call()
         gameState = await contract.methods.game_state().call()
-        owner = await contract.methods.owner().call()
+        gameEntryFee = await contract.methods.entryFee().call()
     })
-})
-
-// if the user changes the account from MetaMask or disconnects
-window.ethereum.on('accountsChanged', async function () {
-    window.location.replace('../html/index.html')
 })
 
 // if the user switches the chain

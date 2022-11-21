@@ -70,14 +70,14 @@ async function getGameDetails() {
 }
 
 async function getWinnerDetails() {
-    const winningNumber = await contract.methods.winningNumber().call()
-    $('#winning-number').append(winningNumber)
+    const lastWinningNumber = await contract.methods.winningNumber().call()
+    $('#winning-number').append(lastWinningNumber)
 
-    winners = await contract.methods.getWinnersList().call()
+    const lastWinners = await contract.methods.getWinnersList().call()
 
-    if (winners.length > 0) {
-        for (let i = 0; i < winners.length; i++) {
-            $('#winner-list').append("<p>" + winners[i] + "</p>")
+    if (lastWinners.length > 0) {
+        for (let i = 0; i < lastWinners.length; i++) {
+            $('#winner-list').append("<p>" + lastWinners[i] + "</p>")
         }
     } else {
         $('#winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the game</p>")
@@ -86,6 +86,7 @@ async function getWinnerDetails() {
 
 async function endGame() {
     autoReload = false
+
     //only owner can end the game
     if (account[0] !== owner) {
         Swal.fire({
@@ -98,7 +99,7 @@ async function endGame() {
     }
 
     //cannot end game if only one player is there
-    if (counter <= 2) {
+    else if (counter <= 2) {
         Swal.fire({
             title: 'Cannot End Game',
             text: 'Atleast 2 players are required before ending the game',
@@ -109,7 +110,7 @@ async function endGame() {
     }
 
     // cannot end game if game state is already closed
-    if (gameState === "1") {
+    else if (gameState === "1") {
         Swal.fire({
             title: 'Calculating winner',
             text: 'Game state is already closed. Wait till the winner is decided',
@@ -118,18 +119,19 @@ async function endGame() {
             window.location.reload()
         })
     }
-
-    document.getElementById('end-game-body').style.pointerEvents = 'none'
-    await closeGameState()
+    else {
+        document.getElementById('end-game-body').style.pointerEvents = 'none'
+        await closeGameState()
+    }
 }
 
 async function closeGameState() {
     contract.methods.closeGameState().send({'from': owner})
         .on('transactionHash', function (hash) {
             Swal.fire({
-                title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
-                    'Do not close this page.',
+                title: 'Closing the game state',
+                text: 'Your transaction is pending at ' + hash + '. Please wait till we close the game state.' +
+                    ' Do not close this page.',
                 icon: 'info',
                 showConfirmButton: false
             })
@@ -137,7 +139,7 @@ async function closeGameState() {
         document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (receipt.status === true) {
             Swal.fire({
-                title: 'Transaction Confirmed',
+                title: 'Game State Closed',
                 text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. Game closed.',
                 icon: 'success',
             }).then(() => {
@@ -177,11 +179,10 @@ async function closeGameState() {
 }
 
 async function selectWinner() {
+    document.getElementById('end-game-body').style.pointerEvents = 'none'
+
     let randomNumber = Math.floor(Math.random() * 10) + 1;
-    console.log("RANDOM---->", randomNumber)
-    // let randomNumber = 3
     winningNumber = randomNumber.toString()
-    console.log(winningNumber)
 
     //selecting winners
     for (let i = 1; i < counter; i++) {
@@ -189,7 +190,6 @@ async function selectWinner() {
             winners.push(players[i])
         }
     }
-
     await callEndGameFromContract()
 }
 
@@ -198,19 +198,19 @@ async function callEndGameFromContract() {
     contract.methods.endGame(winners, winningNumber).send({'from': owner})
         .on('transactionHash', function (hash) {
             Swal.fire({
-                title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
-                    'Do not close this page.',
+                title: 'Calculating the winners',
+                text: 'Your transaction is pending at ' + hash + '. Please wait till we calculate the winners.' +
+                    ' Do not close this page.',
                 icon: 'info',
                 showConfirmButton: false
             })
-            document.getElementById('end-game-btn').style.pointerEvents = 'none'
         }).on('receipt', function (receipt) {
         document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (receipt.status === true) {
             Swal.fire({
-                title: 'Transaction Confirmed',
-                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. GAME ENDED!',
+                title: 'Game Ended',
+                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. GAME ENDED!' +
+                    ' Click on OK to see the results.',
                 icon: 'success',
             }).then(() => {
                 window.location.reload()

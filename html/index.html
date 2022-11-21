@@ -13,8 +13,9 @@
 </head>
 <body class="center" id="index-body">
 
-    <h3>Welcome!</h3>
-    <h4>Stake 0.1 ethers and win a lot!</h4>
+    <h1>Welcome!!!</h1>
+    <h3 id="stake-ether">Stake </h3>
+    <h3>Win a lot!</h3>
 
     <div id="metamask-extension-not-installed" style="display: none">Please add MetaMask Extension to your Browser</div>
     <div id="connect-wallet">
@@ -22,23 +23,17 @@
         <button id="connect-wallet-btn" onclick="connectWallet()">Connect Wallet</button>
     </div>
     <div id="join-game" style="display: none">
-        <p>Click on the button to join the game</p>
-        <p>NOTE: You should at least have 0.1 ethers in your account</p>
-        <button id="join-game-btn" onclick="joinGame()">Pay Eth and Join the Game</button>
-        <div style="margin-top: 50px">
-        Connected Wallet :
-        <p id="connected-wallet"></p>
+        <div>
+            Connected Wallet :
+            <p id="connected-wallet"></p>
         </div>
         <div style="margin-top: 30px">
             Wallet Balance :
             <p id="wallet-balance"></p>
         </div>
         <br>
-<!--        <div id="owner-functions">-->
-<!--            <p>Enter the address to whom you want to transfer the ownership: </p>-->
-<!--            <input type="text" placeholder="Enter the address" id="transfer-ownership-to">-->
-<!--            <button id="transfer-ownership-btn" onclick="transferOwnership()">Transfer Ownership</button>-->
-<!--        </div>-->
+        <button id="play-game-btn" onclick="playGame()">Play the Game</button>
+        <h4 id="note">NOTE: Your balance should be greater than </h4>
     </div>
     <br>
     <a href="about_game.html"><button id="game">About the game</button></a>

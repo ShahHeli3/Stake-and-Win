@@ -29,7 +29,7 @@
     ],
     "name": "addPlayer",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -58,6 +58,11 @@
         "internalType": "address payable[]",
         "name": "_newWinners",
         "type": "address[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_winningNumber",
+        "type": "uint256"
       }
     ],
     "name": "endGame",
@@ -164,19 +169,6 @@
       }
     ],
     "name": "setEntryFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_winningNumber",
-        "type": "uint256"
-      }
-    ],
-    "name": "setWinningNumber",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

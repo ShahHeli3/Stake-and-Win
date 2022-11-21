@@ -5,30 +5,46 @@ $(document).ready(function () {
         } else {
             //timeout for verify_player.js to fetch the contract
             setTimeout(async function () {
-                await getConnectedAccount()
+                const minimumBal = gameEntryFee / Math.pow(10, 18)
+                document.getElementById('stake-ether').append(minimumBal + " Eth")
+                document.getElementById('note').append(minimumBal + " Eth")
+
+                account = await web3.eth.getAccounts()
+                if (account.length > 0) {
+                    await getConnectedAccount()
+                }
 
                 if (account[0] === owner) {
                     document.getElementById('only-owner').style.display = 'block'
                 }
-            }, 600)
+            }, 1500)
         }
     }
 )
 
 async function getConnectedAccount() {
-    account = await web3.eth.getAccounts()
+    document.getElementById('connect-wallet').style.display = 'none'
+    document.getElementById('join-game').style.display = 'block'
+    document.getElementById('connected-wallet').innerText = account[0]
+    document.getElementById('wallet-balance').innerText = await getWalletBalance()
+}
 
-    if (account.length > 0) {
-        document.getElementById('connect-wallet').style.display = 'none'
-        document.getElementById('join-game').style.display = 'block'
-        document.getElementById('connected-wallet').innerText = account[0]
-        document.getElementById('wallet-balance').innerText = await getWalletBalance()
-    }
+//to get balance of the account
+async function getWalletBalance() {
+    let account_balance = await window.ethereum.request({
+        method: "eth_getBalance",
+        params: [
+            window.ethereum.selectedAddress,
+            'latest'
+        ]
+    })
+    const balance = parseInt(account_balance) / Math.pow(10, 18) + ' Eth'
+    return balance
 }
 
 async function connectWallet() {
     {
-        const accounts = await ethereum.request({
+        await ethereum.request({
             method: "eth_requestAccounts"
         }).catch((err) => {
             if (err.code === 4001) {
@@ -55,91 +71,18 @@ async function connectWallet() {
                 })
             }
         })
-        if (accounts) {
-            Swal.fire({
-                title: 'Connection Successful',
-                text: 'MetaMask Wallet Connected',
-                icon: 'success',
-            }).then(() => {
-                window.location.reload()
-            })
-
-        }
     }
 }
 
-//to get balance of the account
-async function getWalletBalance() {
-    let account_balance = await window.ethereum.request({
-        method: "eth_getBalance",
-        params: [
-            window.ethereum.selectedAddress,
-            'latest'
-        ]
-    })
-    balance = parseInt(account_balance) / Math.pow(10, 18) + ' Eth'
-    return balance
+async function playGame() {
+    window.location.replace("../html/select_number.html")
 }
 
-//to pay the entry fee to join the game
-async function joinGame() {
-    const gameEntryFee = await contract.methods.entryFee().call()
-
-    const transactionParameters = {
-        // gasPrice: await web3.eth.getGasPrice(),
-        gas: '0x186A0',
-        to: contractAddress,
-        from: account[0],
-        value: gameEntryFee,
-    };
-    document.getElementById('index-body').style.pointerEvents = 'none'
-
-    await web3.eth.sendTransaction(transactionParameters)
-        .once('transactionHash', function (hash) {
-            transaction_status = Swal.fire({
-                title: 'Transaction status',
-                text: 'Your transaction is pending at ' + hash + '. Please wait till we confirm it.' +
-                    ' Do not close this page',
-                icon: 'info',
-                showConfirmButton: false
-            })
-        })
-        .once('receipt', function (receipt) {
-            transaction_status.close()
-            document.getElementById('index-body').style.pointerEvents = 'auto'
-
-            if (receipt.status === true) {
-                Swal.fire({
-                    title: 'Transaction Confirmed',
-                    text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful',
-                    icon: 'success',
-                }).then(() => {
-                    window.location.replace('../html/select_number.html')
-                })
-            } else {
-                Swal.fire({
-                    title: 'Transaction Error',
-                    text: 'Oops! There was some error in completing your transaction.',
-                    icon: 'error',
-                })
-            }
-        })
-        .on('error', function (error) {
-            document.getElementById('index-body').style.pointerEvents = 'auto'
-
-            if (error.code === 4001) {
-                Swal.fire({
-                    title: 'Transaction Rejected',
-                    text: 'You need to confirm the transaction to join the game.',
-                    icon: 'error',
-                })
-            } else {
-                console.log(error)
-                Swal.fire({
-                    title: 'Transaction Error',
-                    text: 'Oops! There was some error in completing your transaction',
-                    icon: 'error',
-                })
-            }
-        })
-}
+window.ethereum.on('accountsChanged', async function () {
+    account = await web3.eth.getAccounts()
+    if (account.length > 0) {
+        await getConnectedAccount()
+    } else {
+        window.location.reload()
+    }
+})
