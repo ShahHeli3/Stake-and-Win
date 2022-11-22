@@ -5,7 +5,6 @@ let account = null
 let gameState = null
 let counter = null
 let owner = null
-let gameEntryFee = null
 
 $(document).ready(function () {
     fetch("../contract_abi.json").then(
@@ -18,7 +17,6 @@ $(document).ready(function () {
         owner = await contract.methods.owner().call()
         counter = await contract.methods.counter().call()
         gameState = await contract.methods.game_state().call()
-        gameEntryFee = await contract.methods.entryFee().call()
     })
 })
 

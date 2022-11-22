@@ -1,5 +1,51 @@
+.navbar-style {
+    background: transparent;
+    font-weight: bolder;
+    font-size: larger;
+    height: 70px !important;
+    padding: 10px;
+    border-color: transparent;
+}
+
+.logo {
+    height: 75px;
+    width: 120px;
+    margin: -30px;
+    padding-right: 10px;
+    padding-left: 10px;
+    /*border-radius: 50%;*/
+}
+
+.background {
+    background-image: url("../static/images/gameBG.jpg");
+    background-size: cover;
+    color: beige;
+}
+
 .center {
     text-align: center;
+}
+
+.intro {
+    padding-top: 5%;
+}
+
+.btn-style {
+    background-color: beige;
+    color: #00031CFF;
+    height: 40px;
+    width: 150px;
+    transition: transform .4s;
+}
+
+.btn-style:hover {
+    transform: scale(1.2);
+}
+
+.list-style {
+    background: transparent;
+    border-color: transparent;
+    font-size: 18px;
 }
 
 .select {
@@ -8,6 +54,7 @@
     transition: tranform .2s;
     display: inline;
     margin-left: 20px;
+    color: #00031CFF;
 }
 
 .select:hover {
@@ -15,32 +62,37 @@
 }
 
 .division-three {
-    margin: 10px;
+    margin: 20px;
     padding: 10px;
-    height: 160px;
+    height: 200px;
     width: 30%;
+    color: #00031CFF;
+    opacity: 0.8;
+    border-radius: 10%;
 }
 
 .odd {
-    background-color: beige;
+    background-color: #F5E5DCFF;
     float: left;
 }
 
 .even {
-    background-color: antiquewhite;
+    background-color: beige;
     float: left;
 }
 
 .division-two {
-    margin: 10px;
+    margin: 20px;
     padding: 10px;
-    background-color: beige;
+    background-color: #F5E5DCFF;
     width: 46%;
     float: left;
+    color: #00031CFF;
+    opacity: 0.8;
 }
 
 .division-two-child {
-    background-color: antiquewhite;
+    background-color: beige;
     padding: 10px;
 }
 
@@ -54,3 +106,12 @@
     float: right;
 }
 
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(10px);
+}
+
+/*.swal-style {*/
+/*    width: 500px !important;*/
+/*    height: 500px !important;*/
+/*}*/

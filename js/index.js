@@ -1,3 +1,5 @@
+let gameEntryFee = null
+
 $(document).ready(function () {
         if (!window.ethereum) {
             document.getElementById('metamask-extension-not-installed').style.display = 'block'
@@ -5,8 +7,10 @@ $(document).ready(function () {
         } else {
             //timeout for verify_player.js to fetch the contract
             setTimeout(async function () {
+                gameEntryFee = await contract.methods.entryFee().call()
                 const minimumBal = gameEntryFee / Math.pow(10, 18)
-                document.getElementById('stake-ether').append(minimumBal + " Eth")
+
+                document.getElementById('stake-ether').append("Game Fee: " + minimumBal + " Eth")
                 document.getElementById('note').append(minimumBal + " Eth")
 
                 account = await web3.eth.getAccounts()
@@ -14,9 +18,6 @@ $(document).ready(function () {
                     await getConnectedAccount()
                 }
 
-                if (account[0] === owner) {
-                    document.getElementById('only-owner').style.display = 'block'
-                }
             }, 1500)
         }
     }
@@ -27,6 +28,12 @@ async function getConnectedAccount() {
     document.getElementById('join-game').style.display = 'block'
     document.getElementById('connected-wallet').innerText = account[0]
     document.getElementById('wallet-balance').innerText = await getWalletBalance()
+
+    if (account[0] === owner) {
+        document.getElementById('only-owner').style.display = 'block'
+    } else {
+        document.getElementById('only-owner').style.display = 'none'
+    }
 }
 
 //to get balance of the account
@@ -46,6 +53,18 @@ async function connectWallet() {
     {
         await ethereum.request({
             method: "eth_requestAccounts"
+        }).then(() => {
+            Swal.fire({
+                title: 'Connection Successful',
+                text: 'Meta Mask wallet connected. You can now play the game',
+                icon: 'success',
+                confirmButtonColor: '#00031CFF',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false
+            }).then(() => {
+                window.location.reload()
+            })
         }).catch((err) => {
             if (err.code === 4001) {
                 // If this happens, the user rejected the connection request.
@@ -53,6 +72,10 @@ async function connectWallet() {
                     title: 'Connection Rejected',
                     text: 'You need to connect your MetaMask wallet to play the game',
                     icon: 'warning',
+                    confirmButtonColor: '#00031CFF',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
                 })
             } else if (err.code === -32002) {
                 // If this happens, there is already a request pending in the user's wallet, and he has asked for
@@ -61,6 +84,10 @@ async function connectWallet() {
                     title: 'Request Pending',
                     text: 'There is already a request pending in your MetaMask. Please accept it',
                     icon: 'info',
+                    confirmButtonColor: '#00031CFF',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
                 })
             } else {
                 console.log(err)
@@ -68,6 +95,10 @@ async function connectWallet() {
                     title: 'Connection Error',
                     text: 'There was some error in connecting your wallet. Please try again.',
                     icon: 'error',
+                    confirmButtonColor: '#00031CFF',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
                 })
             }
         })

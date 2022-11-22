@@ -1,4 +1,5 @@
 let playerAddress = null
+let gameEntryFee = null
 
 $(document).ready(function () {
         //timeout for verify_player.js to fetch the contract
@@ -6,6 +7,8 @@ $(document).ready(function () {
             if (account.length === 0) {
                 window.location.replace('../html/index.html')
             }
+
+            gameEntryFee = await contract.methods.entryFee().call()
         }, 1000)
     }
 )
@@ -18,7 +21,14 @@ async function select_number(selected_number) {
         confirmButtonText: 'Stake on ' + selected_number,
         showDenyButton: true,
         denyButtonText: 'Change Selection',
-        icon: 'question'
+        icon: 'question',
+        confirmButtonColor: '#00031CFF',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        // color: '#00031CFF',
+        // iconColor: '#00031CFF',
+        // customClass: 'swal-style'
     }).then((result) => {
         document.getElementById('select-number-body').style.pointerEvents = 'none'
 
@@ -44,7 +54,11 @@ async function select_number(selected_number) {
                             text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
                                 'You are added to the game',
                             icon: 'success',
-                            confirmButtonText: 'See Game Status'
+                            confirmButtonText: 'See Game Status',
+                            confirmButtonColor: '#00031CFF',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
                         }).then(() => {
                             window.location.replace("./end_game.html")
                         })
@@ -53,6 +67,10 @@ async function select_number(selected_number) {
                             title: 'Transaction Error',
                             text: 'Oops! There was some error in completing your transaction. Please select a number again',
                             icon: 'error',
+                            confirmButtonColor: '#00031CFF',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
                         }).then(() => {
                             window.location.reload()
                         })
@@ -65,6 +83,10 @@ async function select_number(selected_number) {
                             title: 'Transaction Rejected',
                             text: 'You need to confirm the transaction to enter the game.',
                             icon: 'error',
+                            confirmButtonColor: '#00031CFF',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
                         }).then(() => {
                             window.location.reload()
                         })
@@ -75,6 +97,10 @@ async function select_number(selected_number) {
                             title: 'Transaction Error',
                             text: 'Oops! There was some error in completing your transaction. Please select a number again',
                             icon: 'error',
+                            confirmButtonColor: '#00031CFF',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            allowEnterKey: false
                         }).then(() => {
                             window.location.reload()
                         })

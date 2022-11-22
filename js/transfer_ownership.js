@@ -5,7 +5,11 @@ $(document).ready(function () {
             Swal.fire({
                 title: 'Unauthorized',
                 text: 'Only the owner has access to this page',
-                icon: 'error'
+                icon: 'error',
+                confirmButtonColor: '#00031CFF',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false
             }).then(() => {
                 window.location.replace('../html/index.html')
             })
@@ -21,7 +25,11 @@ function transferOwnership() {
         Swal.fire({
             title: 'Address Field Empty',
             text: 'Please enter an address to transfer the ownership',
-            icon: 'warning'
+            icon: 'warning',
+            confirmButtonColor: '#00031CFF',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false
         })
     } else {
         //check if the address is valid
@@ -29,14 +37,22 @@ function transferOwnership() {
             Swal.fire({
                 title: 'Invalid Address',
                 text: 'Please enter a valid address to transfer the ownership',
-                icon: 'error'
+                icon: 'error',
+                confirmButtonColor: '#00031CFF',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false
             })
         } else {
             if (new_owner === owner) {
                 Swal.fire({
                     title: 'Invalid Request',
                     text: 'You are already the owner',
-                    icon: 'info'
+                    icon: 'info',
+                    confirmButtonColor: '#00031CFF',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
                 })
             } else {
                 Swal.fire({
@@ -45,7 +61,11 @@ function transferOwnership() {
                     icon: 'info',
                     showDenyButton: true,
                     confirmButtonText: "Yes, transfer.",
-                    denyButtonText: "No"
+                    denyButtonText: "No",
+                    confirmButtonColor: '#00031CFF',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false
                 }).then((response) => {
                     document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
 
@@ -68,6 +88,10 @@ function transferOwnership() {
                                     text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
                                         'Ownership transferred to ' + new_owner,
                                     icon: 'success',
+                                    confirmButtonColor: '#00031CFF',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false
                                 }).then(() => {
                                     window.location.replace("../html/index.html")
                                 })
@@ -76,6 +100,10 @@ function transferOwnership() {
                                     title: 'Transaction Error',
                                     text: 'Oops! There was some error in completing your transaction. Please try again',
                                     icon: 'error',
+                                    confirmButtonColor: '#00031CFF',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false
                                 }).then(() => {
                                     window.location.reload()
                                 })
@@ -87,6 +115,10 @@ function transferOwnership() {
                                     title: 'Transaction Rejected',
                                     text: 'You need to confirm the transaction to transfer the ownership.',
                                     icon: 'error',
+                                    confirmButtonColor: '#00031CFF',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false
                                 }).then(() => {
                                     window.location.reload()
                                 })
@@ -96,6 +128,10 @@ function transferOwnership() {
                                     title: 'Transaction Error',
                                     text: 'Oops! There was some error in completing your transaction. Please try again',
                                     icon: 'error',
+                                    confirmButtonColor: '#00031CFF',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false
                                 }).then(() => {
                                     window.location.reload()
                                 })
