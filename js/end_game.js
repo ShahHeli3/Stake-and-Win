@@ -80,7 +80,7 @@ async function getWinnerDetails() {
             $('#winner-list').append("<p>" + lastWinners[i] + "</p>")
         }
     } else {
-        $('#winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the game</p>")
+        $('#winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the previous round</p>")
     }
 }
 
@@ -93,10 +93,12 @@ async function endGame() {
             title: 'Unauthorized',
             text: 'Only the contract owner can end the game',
             icon: 'error',
-            confirmButtonColor: '#00031CFF',
+            confirmButtonColor: '#4B983BFF',
             allowOutsideClick: false,
             allowEscapeKey: false,
-            allowEnterKey: false
+            allowEnterKey: false,
+            iconColor: 'beige',
+            customClass: 'swal-style'
         }).then(async () => {
             window.location.reload()
         })
@@ -108,10 +110,12 @@ async function endGame() {
             title: 'Cannot End Game',
             text: 'Atleast 2 players are required before ending the game',
             icon: 'warning',
-            confirmButtonColor: '#00031CFF',
+            confirmButtonColor: '#4B983BFF',
             allowOutsideClick: false,
             allowEscapeKey: false,
-            allowEnterKey: false
+            allowEnterKey: false,
+            iconColor: 'beige',
+            customClass: 'swal-style'
         }).then(async () => {
             window.location.reload()
         })
@@ -123,10 +127,12 @@ async function endGame() {
             title: 'Calculating winner',
             text: 'Game state is already closed. Wait till the winner is decided',
             icon: 'info',
-            confirmButtonColor: '#00031CFF',
+            confirmButtonColor: '#4B983BFF',
             allowOutsideClick: false,
             allowEscapeKey: false,
-            allowEnterKey: false
+            allowEnterKey: false,
+            iconColor: 'beige',
+            customClass: 'swal-style'
         }).then(async () => {
             window.location.reload()
         })
@@ -144,19 +150,27 @@ async function closeGameState() {
                 text: 'Your transaction is pending at ' + hash + '. Please wait till we close the game state.' +
                     ' Do not close this page.',
                 icon: 'info',
-                showConfirmButton: false
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             })
         }).on('receipt', function (receipt) {
         document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (receipt.status === true) {
             Swal.fire({
                 title: 'Game State Closed',
-                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. Game closed.',
-                icon: 'success',
-                confirmButtonColor: '#00031CFF',
+                text: 'Congratulations! Your transaction at was successful. Game closed.',
+                imageUrl: "../static/images/success.png",
+                imageHeight: '90px',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 document.getElementById('end-game-body').style.pointerEvents = 'none'
                 selectWinner()
@@ -166,10 +180,12 @@ async function closeGameState() {
                 title: 'Transaction Error',
                 text: 'Oops! There was some error in completing your transaction. Please try again.',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -181,10 +197,12 @@ async function closeGameState() {
                 title: 'Transaction Rejected',
                 text: 'You need to confirm the transaction to close the game state.',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -194,10 +212,12 @@ async function closeGameState() {
                 title: 'Transaction Error',
                 text: 'Oops! There was some error in completing your transaction. Please try again',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -229,20 +249,27 @@ async function callEndGameFromContract() {
                 text: 'Your transaction is pending at ' + hash + '. Please wait till we calculate the winners.' +
                     ' Do not close this page.',
                 icon: 'info',
-                showConfirmButton: false
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             })
         }).on('receipt', function (receipt) {
         document.getElementById('end-game-body').style.pointerEvents = 'auto'
         if (receipt.status === true) {
             Swal.fire({
                 title: 'Game Ended',
-                text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. GAME ENDED!' +
-                    ' Click on OK to see the results.',
-                icon: 'success',
-                confirmButtonColor: '#00031CFF',
+                text: 'Congratulations! Your transaction was successful. GAME ENDED! Click on OK to see the results.',
+                imageUrl: "../static/images/success.png",
+                imageHeight: '90px',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -251,10 +278,12 @@ async function callEndGameFromContract() {
                 title: 'Transaction Error',
                 text: 'Oops! There was some error in completing your transaction. Please try again',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -266,10 +295,12 @@ async function callEndGameFromContract() {
                 title: 'Transaction Rejected',
                 text: 'You need to confirm the transaction to end the game.',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })
@@ -279,10 +310,12 @@ async function callEndGameFromContract() {
                 title: 'Transaction Error',
                 text: 'Oops! There was some error in completing your transaction. Please try again',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.reload()
             })

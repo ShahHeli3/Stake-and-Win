@@ -5,7 +5,13 @@ $(document).ready(function () {
                 title: 'Game state Closed',
                 text: 'Sorry! This round has been closed! Try again after sometime',
                 icon: 'info',
-                confirmButtonText: 'See Game Status'
+                confirmButtonText: 'See Game Status',
+                confirmButtonColor: '#4B983BFF',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.replace('../html/end_game.html')
             })
@@ -14,10 +20,11 @@ $(document).ready(function () {
         //verify if player is already a member of the game
         await verifyPlayer()
 
-    }, 500)
+    }, 1000)
 })
 
 async function verifyPlayer() {
+    console.log("verify")
     for (let i = 1; i < counter; i++) {
         let player = await contract.methods.players(i).call()
 

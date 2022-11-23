@@ -20,6 +20,10 @@ $(document).ready(function () {
     })
 })
 
+window.ethereum.on('accountsChanged', async function () {
+    window.location.reload()
+})
+
 // if the user switches the chain
 window.ethereum.on('chainChanged', function (_chainId) {
     window.location.replace('../html/index.html')

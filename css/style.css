@@ -111,7 +111,21 @@ body.swal2-shown > [aria-hidden="true"] {
     filter: blur(10px);
 }
 
-/*.swal-style {*/
-/*    width: 500px !important;*/
-/*    height: 500px !important;*/
-/*}*/
+.swal-style {
+    width: 550px !important;
+    height: 380px !important;
+    background-image: url("../static/images/swalImage.png") !important;
+    background-size: cover !important;
+    color: beige !important;
+    font-size: larger !important;
+}
+
+.input-style {
+    background: beige;
+    color: #00031CFF;
+    border-color: transparent;
+    border-radius: 5px;
+    height: 30px;
+    width: 380px;
+    text-align: center;
+}

@@ -53,29 +53,19 @@ async function connectWallet() {
     {
         await ethereum.request({
             method: "eth_requestAccounts"
-        }).then(() => {
-            Swal.fire({
-                title: 'Connection Successful',
-                text: 'Meta Mask wallet connected. You can now play the game',
-                icon: 'success',
-                confirmButtonColor: '#00031CFF',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                allowEnterKey: false
-            }).then(() => {
-                window.location.reload()
-            })
         }).catch((err) => {
             if (err.code === 4001) {
                 // If this happens, the user rejected the connection request.
                 Swal.fire({
                     title: 'Connection Rejected',
                     text: 'You need to connect your MetaMask wallet to play the game',
-                    icon: 'warning',
-                    confirmButtonColor: '#00031CFF',
+                    icon: 'error',
+                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    allowEnterKey: false
+                    allowEnterKey: false,
+                    iconColor: 'beige',
+                    customClass: 'swal-style'
                 })
             } else if (err.code === -32002) {
                 // If this happens, there is already a request pending in the user's wallet, and he has asked for
@@ -84,10 +74,12 @@ async function connectWallet() {
                     title: 'Request Pending',
                     text: 'There is already a request pending in your MetaMask. Please accept it',
                     icon: 'info',
-                    confirmButtonColor: '#00031CFF',
+                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    allowEnterKey: false
+                    allowEnterKey: false,
+                    iconColor: 'beige',
+                    customClass: 'swal-style'
                 })
             } else {
                 console.log(err)
@@ -95,10 +87,12 @@ async function connectWallet() {
                     title: 'Connection Error',
                     text: 'There was some error in connecting your wallet. Please try again.',
                     icon: 'error',
-                    confirmButtonColor: '#00031CFF',
+                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    allowEnterKey: false
+                    allowEnterKey: false,
+                    iconColor: 'beige',
+                    customClass: 'swal-style'
                 })
             }
         })
@@ -108,12 +102,3 @@ async function connectWallet() {
 async function playGame() {
     window.location.replace("../html/select_number.html")
 }
-
-window.ethereum.on('accountsChanged', async function () {
-    account = await web3.eth.getAccounts()
-    if (account.length > 0) {
-        await getConnectedAccount()
-    } else {
-        window.location.reload()
-    }
-})

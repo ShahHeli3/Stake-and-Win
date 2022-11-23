@@ -6,10 +6,12 @@ $(document).ready(function () {
                 title: 'Unauthorized',
                 text: 'Only the owner has access to this page',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             }).then(() => {
                 window.location.replace('../html/index.html')
             })
@@ -26,10 +28,12 @@ function transferOwnership() {
             title: 'Address Field Empty',
             text: 'Please enter an address to transfer the ownership',
             icon: 'warning',
-            confirmButtonColor: '#00031CFF',
+            confirmButtonColor: '#4B983BFF',
             allowOutsideClick: false,
             allowEscapeKey: false,
-            allowEnterKey: false
+            allowEnterKey: false,
+            iconColor: 'beige',
+            customClass: 'swal-style'
         })
     } else {
         //check if the address is valid
@@ -38,10 +42,12 @@ function transferOwnership() {
                 title: 'Invalid Address',
                 text: 'Please enter a valid address to transfer the ownership',
                 icon: 'error',
-                confirmButtonColor: '#00031CFF',
+                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                allowEnterKey: false
+                allowEnterKey: false,
+                iconColor: 'beige',
+                customClass: 'swal-style'
             })
         } else {
             if (new_owner === owner) {
@@ -49,10 +55,12 @@ function transferOwnership() {
                     title: 'Invalid Request',
                     text: 'You are already the owner',
                     icon: 'info',
-                    confirmButtonColor: '#00031CFF',
+                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    allowEnterKey: false
+                    allowEnterKey: false,
+                    iconColor: 'beige',
+                    customClass: 'swal-style'
                 })
             } else {
                 Swal.fire({
@@ -62,10 +70,13 @@ function transferOwnership() {
                     showDenyButton: true,
                     confirmButtonText: "Yes, transfer.",
                     denyButtonText: "No",
-                    confirmButtonColor: '#00031CFF',
+                    confirmButtonColor: '#4B983BFF',
+                    denyButtonColor: '#E53F3FFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    allowEnterKey: false
+                    allowEnterKey: false,
+                    iconColor: 'beige',
+                    customClass: 'swal-style'
                 }).then((response) => {
                     document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
 
@@ -78,20 +89,28 @@ function transferOwnership() {
                                     text: 'Your transaction is pending at ' + hash + 'Please wait till we complete the transfer.' +
                                         ' Do not close this page.',
                                     icon: 'info',
-                                    showConfirmButton: false
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false,
+                                    iconColor: 'beige',
+                                    customClass: 'swal-style'
                                 })
                             }).on('receipt', function (receipt) {
                             document.getElementById('transfer-ownership-body').style.pointerEvents = 'auto'
                             if (receipt.status === true) {
                                 Swal.fire({
                                     title: 'Transaction Confirmed',
-                                    text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
-                                        'Ownership transferred to ' + new_owner,
-                                    icon: 'success',
-                                    confirmButtonColor: '#00031CFF',
+                                    text: 'Congratulations! Your transaction was successful. Ownership transferred to '
+                                        + new_owner,
+                                    imageUrl: "../static/images/success.png",
+                                    imageHeight: '90px',
+                                    confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
-                                    allowEnterKey: false
+                                    allowEnterKey: false,
+                                    iconColor: 'beige',
+                                    customClass: 'swal-style'
                                 }).then(() => {
                                     window.location.replace("../html/index.html")
                                 })
@@ -100,10 +119,12 @@ function transferOwnership() {
                                     title: 'Transaction Error',
                                     text: 'Oops! There was some error in completing your transaction. Please try again',
                                     icon: 'error',
-                                    confirmButtonColor: '#00031CFF',
+                                    confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
-                                    allowEnterKey: false
+                                    allowEnterKey: false,
+                                    iconColor: 'beige',
+                                    customClass: 'swal-style'
                                 }).then(() => {
                                     window.location.reload()
                                 })
@@ -115,10 +136,12 @@ function transferOwnership() {
                                     title: 'Transaction Rejected',
                                     text: 'You need to confirm the transaction to transfer the ownership.',
                                     icon: 'error',
-                                    confirmButtonColor: '#00031CFF',
+                                    confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
-                                    allowEnterKey: false
+                                    allowEnterKey: false,
+                                    iconColor: 'beige',
+                                    customClass: 'swal-style'
                                 }).then(() => {
                                     window.location.reload()
                                 })
@@ -128,10 +151,12 @@ function transferOwnership() {
                                     title: 'Transaction Error',
                                     text: 'Oops! There was some error in completing your transaction. Please try again',
                                     icon: 'error',
-                                    confirmButtonColor: '#00031CFF',
+                                    confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
-                                    allowEnterKey: false
+                                    allowEnterKey: false,
+                                    iconColor: 'beige',
+                                    customClass: 'swal-style'
                                 }).then(() => {
                                     window.location.reload()
                                 })

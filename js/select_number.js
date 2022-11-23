@@ -19,16 +19,16 @@ async function select_number(selected_number) {
         title: 'Confirm your selection',
         text: 'Please confirm your selection',
         confirmButtonText: 'Stake on ' + selected_number,
+        icon: 'question',
         showDenyButton: true,
         denyButtonText: 'Change Selection',
-        icon: 'question',
-        confirmButtonColor: '#00031CFF',
+        confirmButtonColor: '#4B983BFF',
+        denyButtonColor: '#E53F3FFF',
         allowOutsideClick: false,
         allowEscapeKey: false,
         allowEnterKey: false,
-        // color: '#00031CFF',
-        // iconColor: '#00031CFF',
-        // customClass: 'swal-style'
+        iconColor: 'beige',
+        customClass: 'swal-style'
     }).then((result) => {
         document.getElementById('select-number-body').style.pointerEvents = 'none'
 
@@ -41,9 +41,14 @@ async function select_number(selected_number) {
                     Swal.fire({
                         title: 'Adding you to the game',
                         text: 'Your transaction is pending at ' + hash + '. Please wait till we add you. ' +
-                            'Do not close this page. You will soon be redirected to the game',
+                            'Do not close this page. You will soon be redirected to the game.',
                         icon: 'info',
-                        showConfirmButton: false
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        iconColor: 'beige',
+                        customClass: 'swal-style'
                     })
                 })
                 .on('receipt', function (receipt) {
@@ -51,14 +56,16 @@ async function select_number(selected_number) {
                     if (receipt.status === true) {
                         Swal.fire({
                             title: 'Transaction successful',
-                            text: 'Congratulations! Your transaction at ' + receipt.transactionHash + ' was successful. ' +
-                                'You are added to the game',
-                            icon: 'success',
+                            text: 'Congratulations! Your transaction was successful. You are added to the game.',
+                            imageUrl: "../static/images/success.png",
+                            imageHeight: '90px',
                             confirmButtonText: 'See Game Status',
-                            confirmButtonColor: '#00031CFF',
+                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
-                            allowEnterKey: false
+                            allowEnterKey: false,
+                            iconColor: 'beige',
+                            customClass: 'swal-style'
                         }).then(() => {
                             window.location.replace("./end_game.html")
                         })
@@ -67,10 +74,12 @@ async function select_number(selected_number) {
                             title: 'Transaction Error',
                             text: 'Oops! There was some error in completing your transaction. Please select a number again',
                             icon: 'error',
-                            confirmButtonColor: '#00031CFF',
+                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
-                            allowEnterKey: false
+                            allowEnterKey: false,
+                            iconColor: 'beige',
+                            customClass: 'swal-style'
                         }).then(() => {
                             window.location.reload()
                         })
@@ -83,10 +92,12 @@ async function select_number(selected_number) {
                             title: 'Transaction Rejected',
                             text: 'You need to confirm the transaction to enter the game.',
                             icon: 'error',
-                            confirmButtonColor: '#00031CFF',
+                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
-                            allowEnterKey: false
+                            allowEnterKey: false,
+                            iconColor: 'beige',
+                            customClass: 'swal-style'
                         }).then(() => {
                             window.location.reload()
                         })
@@ -97,10 +108,12 @@ async function select_number(selected_number) {
                             title: 'Transaction Error',
                             text: 'Oops! There was some error in completing your transaction. Please select a number again',
                             icon: 'error',
-                            confirmButtonColor: '#00031CFF',
+                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
-                            allowEnterKey: false
+                            allowEnterKey: false,
+                            iconColor: 'beige',
+                            customClass: 'swal-style'
                         }).then(() => {
                             window.location.reload()
                         })
