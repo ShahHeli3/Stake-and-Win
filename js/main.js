@@ -1,5 +1,5 @@
 const web3 = new Web3(Web3.givenProvider)
-let contractAddress = "0xafd4e59fFA9608D0dEAd962791aA99EDfEF27e3a"
+let contractAddress = "0x512cB88607C80cC747633e4bdcd2d376b943D70C"
 let contract = null
 let account = null
 let gameState = null

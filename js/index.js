@@ -72,7 +72,7 @@ async function connectWallet() {
                 // another connection
                 Swal.fire({
                     title: 'Request Pending',
-                    text: 'There is already a request pending in your MetaMask. Please accept it',
+                    html: 'There is already a request pending in your MetaMask.<br>Please accept it',
                     icon: 'info',
                     confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
@@ -85,7 +85,7 @@ async function connectWallet() {
                 console.log(err)
                 Swal.fire({
                     title: 'Connection Error',
-                    text: 'There was some error in connecting your wallet. Please try again.',
+                    html: 'There was some error in connecting your wallet.<br>Please try again.',
                     icon: 'error',
                     confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,

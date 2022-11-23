@@ -78,16 +78,14 @@ function transferOwnership() {
                     iconColor: 'beige',
                     customClass: 'swal-style'
                 }).then((response) => {
-                    document.getElementById('transfer-ownership-body').style.pointerEvents = 'none'
-
                     if (response.isConfirmed) {
                         //send the transfer ownership transaction
                         contract.methods.transferOwnership(new_owner).send({'from': owner})
                             .on('transactionHash', function (hash) {
                                 Swal.fire({
                                     title: 'Transferring Ownership',
-                                    text: 'Your transaction is pending at ' + hash + 'Please wait till we complete the transfer.' +
-                                        ' Do not close this page.',
+                                    html: `Your transaction is pending...<br>Please wait till we complete the transfer.<br>Do not close this page.` +
+                                        `<br>Click <a href="https://goerli.etherscan.io/tx/${hash}" target="_blank">here</a> to view your transaction`,
                                     icon: 'info',
                                     showConfirmButton: false,
                                     allowOutsideClick: false,
@@ -97,14 +95,13 @@ function transferOwnership() {
                                     customClass: 'swal-style'
                                 })
                             }).on('receipt', function (receipt) {
-                            document.getElementById('transfer-ownership-body').style.pointerEvents = 'auto'
                             if (receipt.status === true) {
                                 Swal.fire({
                                     title: 'Transaction Confirmed',
-                                    text: 'Congratulations! Your transaction was successful. Ownership transferred to '
-                                        + new_owner,
+                                    html: `Your transaction was successful.<br>Ownership transferred to ` + new_owner +
+                                        `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                                     imageUrl: "../static/images/success.png",
-                                    imageHeight: '90px',
+                                    imageHeight: '70px',
                                     confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
@@ -117,7 +114,7 @@ function transferOwnership() {
                             } else {
                                 Swal.fire({
                                     title: 'Transaction Error',
-                                    text: 'Oops! There was some error in completing your transaction. Please try again',
+                                    html: 'Oops! There was some error in completing your transaction.<br>Please try again',
                                     icon: 'error',
                                     confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
@@ -130,7 +127,6 @@ function transferOwnership() {
                                 })
                             }
                         }).on('error', function (error) {
-                            document.getElementById('transfer-ownership-body').style.pointerEvents = 'auto'
                             if (error.code === 4001) {
                                 Swal.fire({
                                     title: 'Transaction Rejected',
@@ -149,7 +145,7 @@ function transferOwnership() {
                                 console.log(error)
                                 Swal.fire({
                                     title: 'Transaction Error',
-                                    text: 'Oops! There was some error in completing your transaction. Please try again',
+                                    html: 'Oops! There was some error in completing your transaction.<br>Please try again',
                                     icon: 'error',
                                     confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,

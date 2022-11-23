@@ -30,8 +30,6 @@ async function select_number(selected_number) {
         iconColor: 'beige',
         customClass: 'swal-style'
     }).then((result) => {
-        document.getElementById('select-number-body').style.pointerEvents = 'none'
-
         if (result.isConfirmed) {
             //send add player transaction
             playerAddress = account[0]
@@ -40,8 +38,8 @@ async function select_number(selected_number) {
                 .on('transactionHash', function (hash) {
                     Swal.fire({
                         title: 'Adding you to the game',
-                        text: 'Your transaction is pending at ' + hash + '. Please wait till we add you. ' +
-                            'Do not close this page. You will soon be redirected to the game.',
+                        html: `Your transaction is pending...<br>Please wait till we add you to the game.<br>Do not close this page.` +
+                            `<br>Click <a href="https://goerli.etherscan.io/tx/${hash}" target="_blank">here</a> to view your transaction`,
                         icon: 'info',
                         showConfirmButton: false,
                         allowOutsideClick: false,
@@ -52,19 +50,18 @@ async function select_number(selected_number) {
                     })
                 })
                 .on('receipt', function (receipt) {
-                    document.getElementById('select-number-body').style.pointerEvents = 'auto'
                     if (receipt.status === true) {
                         Swal.fire({
                             title: 'Transaction successful',
-                            text: 'Congratulations! Your transaction was successful. You are added to the game.',
+                            html: `Congratulations!!! <br>Your transaction was successful.<br>You are added to the game.` +
+                                `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                             imageUrl: "../static/images/success.png",
-                            imageHeight: '90px',
+                            imageHeight: '70px',
                             confirmButtonText: 'See Game Status',
                             confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             allowEnterKey: false,
-                            iconColor: 'beige',
                             customClass: 'swal-style'
                         }).then(() => {
                             window.location.replace("./end_game.html")
@@ -72,7 +69,7 @@ async function select_number(selected_number) {
                     } else {
                         Swal.fire({
                             title: 'Transaction Error',
-                            text: 'Oops! There was some error in completing your transaction. Please select a number again',
+                            html: 'Oops! There was some error in completing your transaction.<br>Please select a number again',
                             icon: 'error',
                             confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
@@ -86,7 +83,6 @@ async function select_number(selected_number) {
                     }
                 })
                 .on('error', function (error) {
-                    document.getElementById('select-number-body').style.pointerEvents = 'auto'
                     if (error.code === 4001) {
                         Swal.fire({
                             title: 'Transaction Rejected',
@@ -106,7 +102,7 @@ async function select_number(selected_number) {
                         console.log(error)
                         Swal.fire({
                             title: 'Transaction Error',
-                            text: 'Oops! There was some error in completing your transaction. Please select a number again',
+                            html: 'Oops! There was some error in completing your transaction.<br>Please select a number again',
                             icon: 'error',
                             confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,

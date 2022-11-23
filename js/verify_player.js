@@ -3,7 +3,7 @@ $(document).ready(function () {
         if (gameState === "1") {
             Swal.fire({
                 title: 'Game state Closed',
-                text: 'Sorry! This round has been closed! Try again after sometime',
+                html: 'Sorry!<br>This round has been closed!<br>Try again after sometime',
                 icon: 'info',
                 confirmButtonText: 'See Game Status',
                 confirmButtonColor: '#4B983BFF',
