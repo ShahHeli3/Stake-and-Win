@@ -64,7 +64,7 @@
 .division-three {
     margin: 20px;
     padding: 10px;
-    height: 200px;
+    height: 220px;
     width: 30%;
     color: #00031CFF;
     opacity: 0.8;
@@ -86,10 +86,12 @@
     padding: 10px;
     background-color: #F5E5DCFF;
     width: 46%;
+    height: 300px;
     float: left;
     color: #00031CFF;
     opacity: 0.8;
     border-radius: 5px;
+    overflow-y: auto;
 }
 
 .division-two-child {

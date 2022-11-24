@@ -83,6 +83,7 @@ async function select_number(selected_number) {
                     }
                 })
                 .on('error', function (error) {
+                    console.log(error)
                     if (error.code === 4001) {
                         Swal.fire({
                             title: 'Transaction Rejected',
@@ -99,7 +100,6 @@ async function select_number(selected_number) {
                         })
 
                     } else {
-                        console.log(error)
                         Swal.fire({
                             title: 'Transaction Error',
                             html: 'Oops! There was some error in completing your transaction.<br>Please select a number again',

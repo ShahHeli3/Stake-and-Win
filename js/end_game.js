@@ -6,10 +6,10 @@ let autoReload = true
 
 // reload page after 15s
 window.setTimeout(function () {
-    if (autoReload && gameState === "0") {
+    if (autoReload) {
         window.location.reload();
     }
-}, 30000);
+}, 15000);
 
 $(document).ready(function () {
 
@@ -18,15 +18,13 @@ $(document).ready(function () {
             if (gameState === "1") {
                 document.getElementById('game-open-message').style.display = "none"
                 document.getElementById('game-end-message').style.display = "block"
-                document.getElementById('previous-game-results').style.display = "none"
-                document.getElementById('current-game-results').style.display = "block"
             }
 
             if (account[0] === owner) {
                 document.getElementById('only-owner').style.display = 'block'
             }
 
-            await getWinningDetails()
+            await getWinningAmount()
             await getContractDetails()
             await getGameDetails()
             await getWinnerDetails()
@@ -34,7 +32,7 @@ $(document).ready(function () {
     }
 )
 
-async function getWinningDetails() {
+async function getWinningAmount() {
     let contractBalance = await web3.eth.getBalance(contractAddress)
     let winning_amount = ((contractBalance * 80) / 100)
 
@@ -50,11 +48,12 @@ async function getContractDetails() {
 async function getGameDetails() {
     if (gameState === "0") {
         document.getElementById('game-state').append("OPEN")
+        document.getElementById('total-players').append(counter - 1)
     } else {
+        autoReload = true
         document.getElementById('game-state').append("CLOSED")
+        document.getElementById('total-players').style.display = 'none'
     }
-
-    document.getElementById('total-players').append(counter - 1)
 
     for (let i = 1; i < counter; i++) {
         let player = await contract.methods.players(i).call()
@@ -143,6 +142,7 @@ async function endGame() {
 }
 
 async function closeGameState() {
+
     contract.methods.closeGameState().send({'from': owner})
         .on('transactionHash', function (hash) {
             Swal.fire({
@@ -190,6 +190,7 @@ async function closeGameState() {
             })
         }
     }).on('error', function (error) {
+        console.log(error)
         if (error.code === 4001) {
             Swal.fire({
                 title: 'Transaction Rejected',
@@ -205,7 +206,6 @@ async function closeGameState() {
                 window.location.reload()
             })
         } else {
-            console.log(error)
             Swal.fire({
                 title: 'Transaction Error',
                 text: 'Oops! There was some error in completing your transaction. Please try again',
@@ -287,6 +287,7 @@ async function callEndGameFromContract() {
             })
         }
     }).on('error', function (error) {
+        console.log(error)
         if (error.code === 4001) {
             Swal.fire({
                 title: 'Transaction Rejected',
@@ -302,7 +303,6 @@ async function callEndGameFromContract() {
                 window.location.reload()
             })
         } else {
-            console.log(error)
             Swal.fire({
                 title: 'Transaction Error',
                 html: 'Oops! There was some error in completing your transaction.<br>Please try again',

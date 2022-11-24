@@ -127,6 +127,7 @@ function transferOwnership() {
                                 })
                             }
                         }).on('error', function (error) {
+                            console.log(error)
                             if (error.code === 4001) {
                                 Swal.fire({
                                     title: 'Transaction Rejected',
@@ -142,7 +143,6 @@ function transferOwnership() {
                                     window.location.reload()
                                 })
                             } else {
-                                console.log(error)
                                 Swal.fire({
                                     title: 'Transaction Error',
                                     html: 'Oops! There was some error in completing your transaction.<br>Please try again',
