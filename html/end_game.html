@@ -57,51 +57,60 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<h2 id="game-open-message">The game will end any time.</h2>
-<h2 id="game-end-message" style="display: none">Game Ended.</h2>
+<h2 id="game-open-message">The game will end any time...</h2>
+<h2 id="game-end-message" style="display: none">Game Ended. Calculating Winners...</h2>
 <br>
-
 
 <div>
     <div class="division-three odd">
         <h3><u>Winning Amount</u></h3>
         <br>
-        <p id="winning-amount-wei"><b>Winning amount in wei: </b></p>
-        <p id="winning-amount-eth"><b>Winning amount in eth: </b></p>
+        <div id="winning-amount">
+            <!-- winning amount details -->
+        </div>
     </div>
+
     <div class="division-three even">
         <h3><u>Game Status</u></h3>
         <br>
-        <p id="game-state"><b>Game State: </b></p>
-        <p id="total-players"><b>Total Players: </b></p>
+        <div id="game-details">
+            <!-- game details -->
+        </div>
     </div>
+
     <div class="division-three odd">
         <h3><u>Contract Details</u></h3>
         <br>
-        <p id="contract-address"><b>Contract Address: </b></p>
-        <p id="contract-owner"><b>Contract Owner: </b></p>
+        <div id="contract-details">
+            <!-- contract details -->
+        </div>
     </div>
 </div>
 
-<div class="division-two" id="players-list">
+<div class="division-two" id="player-details">
     <h3><u>Players in the current round</u></h3>
     <br>
-    <div class="division-two-child division-two-left" id="player-address">
+    <div class="division-two-child" id="no-players" style="display: none">
+        <h4>Nobody has joined the game yet</h4>
+    </div>
+    <div class="division-two-child division-two-left" id="player-address" style="display: none">
+        <!-- players' addresses -->
         <p><b>Player's Address</b></p>
     </div>
-    <div class="division-two-child division-two-right" id="player-number">
+    <div class="division-two-child division-two-right" id="player-selection" style="display: none">
+        <!-- players' selected numbers -->
         <p><b>Selected Number</b></p>
     </div>
 </div>
 <div class="division-two" id="winners">
     <h3><u>Previous Game's Results</u></h3>
     <br>
-    <div class="division-two-child">
-        <p id="winning-number"><b>Winning Number: </b></p>
+    <div class="division-two-child" id="div-winning-number">
+        <!--        <p id="winning-number"><b>Winning Number: </b></p>-->
     </div>
     <br>
-    <div class="division-two-child" id="winner-list">
-        <p><b>Winner/s</b></p>
+    <div class="division-two-child" id="div-winner-list">
+        <!--        <p><b>Winner/s</b></p>-->
     </div>
 </div>
 </body>

@@ -4,29 +4,20 @@ let winners = []
 let winningNumber = null
 let autoReload = true
 
-// reload page after 15s
-window.setTimeout(function () {
-    if (autoReload) {
-        window.location.reload();
-    }
-}, 15000);
-
 $(document).ready(function () {
 
         //timeout for verify_player.js to fetch the contract
         setTimeout(async function () {
-            if (gameState === "1") {
-                document.getElementById('game-open-message').style.display = "none"
-                document.getElementById('game-end-message').style.display = "block"
-            }
+            console.log(owner)
 
             if (account[0] === owner) {
                 document.getElementById('only-owner').style.display = 'block'
             }
 
             await getWinningAmount()
-            await getContractDetails()
             await getGameDetails()
+            await getContractDetails()
+            await getPlayerDetails()
             await getWinnerDetails()
         }, 2000)
     }
@@ -36,50 +27,61 @@ async function getWinningAmount() {
     let contractBalance = await web3.eth.getBalance(contractAddress)
     let winning_amount = ((contractBalance * 80) / 100)
 
-    document.getElementById('winning-amount-wei').append(winning_amount)
-    document.getElementById('winning-amount-eth').append(winning_amount * (10 ** (-18)))
-}
-
-async function getContractDetails() {
-    document.getElementById('contract-address').append(contractAddress)
-    document.getElementById('contract-owner').append(owner)
+    $('#winning-amount').empty().append('<p><b>Winning amount in wei: </b>' + winning_amount + '</p>' +
+        '<p><b>Winning amount in eth: </b>' + winning_amount * (10 ** (-18)) + '</p>')
 }
 
 async function getGameDetails() {
+    gameState = await contract.methods.game_state().call()
+
     if (gameState === "0") {
-        document.getElementById('game-state').append("OPEN")
-        document.getElementById('total-players').append(counter - 1)
+        $('#game-details').empty().append('<p><b>Game State: </b>OPEN</p>' +
+            '<p id="total-players"><b>Total Players: </b>' + (counter - 1) + '</p>')
     } else {
-        autoReload = true
-        document.getElementById('game-state').append("CLOSED")
-        document.getElementById('total-players').style.display = 'none'
+        document.getElementById('game-open-message').style.display = "none"
+        document.getElementById('game-end-message').style.display = "block"
+        $('#game-details').empty().append('<p><b>Game State: </b>CLOSED</p>')
     }
+}
 
-    for (let i = 1; i < counter; i++) {
-        let player = await contract.methods.players(i).call()
-        players[i] = player
+async function getContractDetails() {
+    $('#contract-details').empty().append('<p><b>Contract Address: </b>' + contractAddress + '</p>' +
+        '<p><b>Contract Owner: </b>' + owner + '</p>')
+}
 
-        let selected_number = await contract.methods.guessedNumber(i).call()
-        selectedNumbers[i] = selected_number
+async function getPlayerDetails() {
+    if (counter === "1") {
+        document.getElementById('no-players').style.display = 'block'
+    } else {
+        document.getElementById('player-address').style.display = 'block'
+        document.getElementById('player-selection').style.display = 'block'
+        for (let i = 1; i < counter; i++) {
+            players[i] = await contract.methods.players(i).call()
+            selectedNumbers[i] = await contract.methods.guessedNumber(i).call()
+        }
+        console.log(players)
+        console.log(selectedNumbers)
 
-        $('#player-address').append("<p>" + player + "</p>")
-        $('#player-number').append("<p>" + selected_number + "</p>")
-
+        for (let i = 1; i < counter; i++) {
+            $('#player-address').append("<p>" + players[i] + "</p>")
+            $('#player-number').append("<p>" + selectedNumbers[i] + "</p>")
+        }
     }
 }
 
 async function getWinnerDetails() {
-    const lastWinningNumber = await contract.methods.winningNumber().call()
-    $('#winning-number').append(lastWinningNumber)
+    winningNumber = await contract.methods.winningNumber().call()
+    $('#div-winning-number').empty().append('<p><b>Winning Number: </b>' + winningNumber + '</p>')
 
-    const lastWinners = await contract.methods.getWinnersList().call()
+    winners = await contract.methods.getWinnersList().call()
+    $('#div-winner-list').empty().append('<p><b>Winner/s</b></p>')
 
-    if (lastWinners.length > 0) {
-        for (let i = 0; i < lastWinners.length; i++) {
-            $('#winner-list').append("<p>" + lastWinners[i] + "</p>")
+    if (winners.length > 0) {
+        for (let i = 0; i < winners.length; i++) {
+            $('#div-winner-list').append("<p>" + winners[i] + "</p>")
         }
     } else {
-        $('#winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the previous round</p>")
+        $('#div-winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the previous round</p>")
     }
 }
 
@@ -177,7 +179,8 @@ async function closeGameState() {
         } else {
             Swal.fire({
                 title: 'Transaction Error',
-                html: 'Oops! There was some error in completing your transaction.<br>Please try again.',
+                html: `Oops! There was some error in completing your transaction.<br>Please try again.` +
+                    `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                 icon: 'error',
                 confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
@@ -274,7 +277,8 @@ async function callEndGameFromContract() {
         } else {
             Swal.fire({
                 title: 'Transaction Error',
-                html: 'Oops! There was some error in completing your transaction.<br>Please try again',
+                html: `Oops! There was some error in completing your transaction.<br>Please try again` +
+                    `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                 icon: 'error',
                 confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
@@ -319,3 +323,26 @@ async function callEndGameFromContract() {
         }
     });
 }
+
+
+window.setInterval(async () => {
+    const currentOwner = await contract.methods.owner().call()
+    console.log(owner, currentOwner)
+
+    if (currentOwner !== owner) {
+        owner = currentOwner
+        await getContractDetails()
+    }
+
+    const currentCounter = await contract.methods.counter().call()
+    console.log(counter, currentCounter)
+
+    if (counter !== currentCounter) {
+        counter = currentCounter
+        await getWinningAmount()
+        await getGameDetails()
+        await getPlayerDetails()
+        await getWinnerDetails()
+    }
+
+}, 5000)

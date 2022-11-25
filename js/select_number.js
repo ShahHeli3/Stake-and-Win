@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 async function select_number(selected_number) {
     await verifyPlayer()
+    document.getElementById('number-buttons').style.pointerEvents = 'none'
     Swal.fire({
         title: 'Confirm your selection',
         text: 'Please confirm your selection',
@@ -69,7 +70,8 @@ async function select_number(selected_number) {
                     } else {
                         Swal.fire({
                             title: 'Transaction Error',
-                            html: 'Oops! There was some error in completing your transaction.<br>Please select a number again',
+                            html: `Oops! There was some error in completing your transaction.<br>Please select a number again` +
+                                `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                             icon: 'error',
                             confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,

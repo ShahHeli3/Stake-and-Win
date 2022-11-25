@@ -114,7 +114,8 @@ function transferOwnership() {
                             } else {
                                 Swal.fire({
                                     title: 'Transaction Error',
-                                    html: 'Oops! There was some error in completing your transaction.<br>Please try again',
+                                    html: `Oops! There was some error in completing your transaction.<br>Please try again` +
+                                        `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                                     icon: 'error',
                                     confirmButtonColor: '#4B983BFF',
                                     allowOutsideClick: false,
