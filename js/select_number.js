@@ -30,12 +30,15 @@ async function select_number(selected_number) {
         allowEnterKey: false,
         iconColor: 'beige',
         customClass: 'swal-style'
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
             //send add player transaction
             playerAddress = account[0]
 
-            contract.methods.addPlayer(playerAddress, selected_number).send({from: playerAddress, value: gameEntryFee})
+            await contract.methods.addPlayer(playerAddress, selected_number).send({
+                from: playerAddress,
+                value: gameEntryFee
+            })
                 .on('transactionHash', function (hash) {
                     Swal.fire({
                         title: 'Adding you to the game',

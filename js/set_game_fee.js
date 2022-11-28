@@ -1,3 +1,5 @@
+let gameEntryFee = null
+
 $(document).ready(function () {
     setTimeout(async function () {
         //validate owner
@@ -16,17 +18,19 @@ $(document).ready(function () {
                 window.location.replace('../html/index.html')
             })
         }
+        gameEntryFee = await contract.methods.entryFee().call()
+        $('#current-fee').append(gameEntryFee + " wei (" + gameEntryFee / Math.pow(10, 18) + " eth)")
     }, 1000)
 })
 
-function transferOwnership() {
-    let new_owner = document.getElementById('transfer-ownership-to').value
+function setEntryFee() {
+    let new_entry_fee = document.getElementById('new-entry-fee').value
 
     //check if the field is empty
-    if (new_owner.length === 0) {
+    if (new_entry_fee.length === 0) {
         Swal.fire({
-            title: 'Address Field Empty',
-            text: 'Please enter an address to transfer the ownership',
+            title: 'Game Fee value is Empty',
+            text: 'Please enter an amount in wei to update the game fee',
             icon: 'warning',
             confirmButtonColor: '#4B983BFF',
             allowOutsideClick: false,
@@ -36,11 +40,13 @@ function transferOwnership() {
             customClass: 'swal-style'
         })
     } else {
-        //check if the address is valid
-        if (web3.utils.isAddress(new_owner) === false) {
+        //check if the fee is valid
+        let num_entry_fee = Number(new_entry_fee)
+
+        if (Number.isInteger(num_entry_fee) === false || num_entry_fee <= 0 ) {
             Swal.fire({
-                title: 'Invalid Address',
-                text: 'Please enter a valid address to transfer the ownership',
+                title: 'Invalid Amount',
+                text: 'Please enter a valid amount in wei to set the new entry fee',
                 icon: 'error',
                 confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
@@ -50,10 +56,10 @@ function transferOwnership() {
                 customClass: 'swal-style'
             })
         } else {
-            if (new_owner === owner) {
+            if (num_entry_fee === Number(gameEntryFee)) {
                 Swal.fire({
                     title: 'Invalid Request',
-                    text: 'You are already the owner',
+                    text: 'The current entry fee value is the same as requested',
                     icon: 'info',
                     confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
@@ -64,11 +70,11 @@ function transferOwnership() {
                 })
             } else {
                 Swal.fire({
-                    title: 'Confirm Ownership Transfer',
-                    text: 'Are you sure you want to transfer the ownership to ' + new_owner,
+                    title: 'Confirm New Entry Fee',
+                    text: 'Are you sure you want to set the entry fee to ' + num_entry_fee,
                     icon: 'info',
                     showDenyButton: true,
-                    confirmButtonText: "Yes, transfer.",
+                    confirmButtonText: "Yes, update.",
                     denyButtonText: "No",
                     confirmButtonColor: '#4B983BFF',
                     denyButtonColor: '#E53F3FFF',
@@ -80,10 +86,10 @@ function transferOwnership() {
                 }).then(async (response) => {
                     if (response.isConfirmed) {
                         //send the transfer ownership transaction
-                        await contract.methods.transferOwnership(new_owner).send({'from': owner})
+                        await contract.methods.setEntryFee(new_entry_fee).send({'from': owner})
                             .on('transactionHash', function (hash) {
                                 Swal.fire({
-                                    title: 'Transferring Ownership',
+                                    title: 'Updating Game Entry Fee',
                                     html: `Your transaction is pending...<br>Please wait till we complete the transfer.<br>Do not close this page.` +
                                         `<br>Click <a href="https://goerli.etherscan.io/tx/${hash}" target="_blank">here</a> to view your transaction`,
                                     icon: 'info',
@@ -98,7 +104,7 @@ function transferOwnership() {
                                 if (receipt.status === true) {
                                     Swal.fire({
                                         title: 'Transaction Confirmed',
-                                        html: `Your transaction was successful.<br>Ownership transferred to ` + new_owner +
+                                        html: `Your transaction was successful.<br>Game Fee updated to ` + num_entry_fee +
                                             `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                                         imageUrl: "../static/images/success.png",
                                         imageHeight: '70px',
@@ -132,7 +138,7 @@ function transferOwnership() {
                                 if (error.code === 4001) {
                                     Swal.fire({
                                         title: 'Transaction Rejected',
-                                        text: 'You need to confirm the transaction to transfer the ownership.',
+                                        text: 'You need to confirm the transaction to update the entry fee.',
                                         icon: 'error',
                                         confirmButtonColor: '#4B983BFF',
                                         allowOutsideClick: false,

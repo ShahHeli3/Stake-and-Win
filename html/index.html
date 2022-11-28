@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Home Page</title>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
@@ -20,7 +19,7 @@
     <script src="../js/index.js"></script>
 </head>
 
-<body class="background center" id="index-body">
+<body class="background" id="index-body">
 
 <!--navigation bar-->
 <nav class="navbar navbar-inverse navbar-style">
@@ -50,49 +49,61 @@
             </ul>
             <ul class="nav navbar-nav navbar-right" id="only-owner" style="display: none">
                 <li><a href="transfer_ownership.html">Transfer Ownership</a></li>
+                <li><a href="set_game_fee.html">Update Entry Fee</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="intro">
-    <h1><b>Welcome to <i>Stake And Win</i></b></h1>
-    <h2>It's all about luck...</h2>
-    <br>
-    <h4>Stake eth just equal to the game fee and have a chance to multiply it!</h4>
-    <h4>Try your luck..</h4>
-    <h5 id="stake-ether"></h5>
-</div>
-<br>
+<div class="custom-row">
+    <div class="custom-left-col">
+        <div class="cover-box">
+            <div>
+                <h1 class="title"><b>Welcome to <i>Stake And Win</i></b></h1>
+                <h2>It's all about luck...</h2>
+                <br>
+                <h4>Stake eth just equal to the game fee and have a chance to multiply it!</h4>
+                <h4>Try your luck..</h4>
+                <h5 id="stake-ether"></h5>
+            </div>
+            <br>
 
-<!--if metamask extension is not there in the browser -->
-<div id="metamask-extension-not-installed" style="display: none">
-    <h3>Please add MetaMask Extension to your Browser</h3>
-</div>
+            <!--if metamask extension is not there in the browser -->
+            <div id="metamask-extension-not-installed" style="display: none">
+                <h3>Please add MetaMask Extension to your Browser</h3>
+            </div>
 
-<!--connect wallet if the extension is there-->
-<div id="connect-wallet">
-    <h4>Please connect your MetaMask wallet to join the game</h4>
-    <br>
-    <button id="connect-wallet-btn" class="btn btn-style" onclick="connectWallet()">Connect Wallet</button>
-</div>
+            <!--connect wallet if the extension is there-->
+            <div id="connect-wallet">
+                <h4>Please connect your MetaMask wallet to join the game</h4>
+                <br>
+                <button id="connect-wallet-btn" class="btn button-style button-common" onclick="connectWallet()">
+                    <span class="button-span">Connect Wallet</span></button>
+            </div>
 
-<!--join game after connecting the wallet successfully-->
-<div id="join-game" style="display: none">
-    <div>
-        Connected Wallet :
-        <p id="connected-wallet"></p>
+            <!--join game after connecting the wallet successfully-->
+            <div id="join-game" style="display: none">
+                <div>
+                    Connected Wallet :
+                    <p id="connected-wallet"></p>
+                </div>
+                <div style="margin-top: 30px">
+                    Wallet Balance :
+                    <p id="wallet-balance"></p>
+                </div>
+                <br>
+                <button id="play-game-btn" class="btn button-style button-common" onclick="playGame()">
+                    <span class="button-span">Play the Game</span>
+                </button>
+                <br><br>
+                <h4 id="note">NOTE: Your balance should be greater than </h4>
+            </div>
+        </div>
     </div>
-    <div style="margin-top: 30px">
-        Wallet Balance :
-        <p id="wallet-balance"></p>
+    <div class="custom-right-col">
+        <img src="../static/images/BGDesign.png" class="cover-image">
     </div>
-    <br>
-    <button id="play-game-btn" class="btn btn-style" onclick="playGame()">Play the Game</button>
-    <br><br>
-    <h4 id="note">NOTE: Your balance should be greater than </h4>
 </div>
-
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
         crossorigin="anonymous"></script>

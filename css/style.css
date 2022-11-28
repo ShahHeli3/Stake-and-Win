@@ -13,33 +13,39 @@
     margin: -30px;
     padding-right: 10px;
     padding-left: 10px;
-    /*border-radius: 50%;*/
 }
 
 .background {
-    background-image: url("../static/images/gameBG.jpg");
+    background-image: url("../static/images/gameBg.jpg");
     background-size: cover;
     color: beige;
 }
 
+.title-header {
+    font-size: 20px;
+    color: #90889f;
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.title:after {
+    background-image: radial-gradient(#5e1da1, #1f013e, #1c0038, #ffffff00);
+    content: "";
+    display: inline-block;
+    height: 10px;
+    vertical-align: middle;
+    width: 50%;
+    right: 0;
+    left: 0;
+    margin: 45px auto 0;
+    position: absolute;
+}
+
 .center {
     text-align: center;
-}
-
-.intro {
-    padding-top: 5%;
-}
-
-.btn-style {
-    background-color: beige;
-    color: #00031CFF;
-    height: 40px;
-    width: 150px;
-    transition: transform .4s;
-}
-
-.btn-style:hover {
-    transform: scale(1.2);
 }
 
 .list-style {
@@ -48,23 +54,124 @@
     font-size: 18px;
 }
 
-.select {
-    padding: 50px;
-    background: beige;
-    transition: tranform .2s;
-    display: inline;
-    margin-left: 20px;
-    color: #00031CFF;
+.custom-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    padding: 0 25px;
 }
 
-.select:hover {
-    transform: scale(1.3);
+.custom-left-col {
+    width: 65%;
+    padding-right: 20px;
+}
+
+.custom-right-col {
+    width: 35%;
+}
+
+.cover-box {
+    border: 0.5px solid #5e1da1;
+    transition: all 0.3s ease;
+    padding: 10px 20px;
+    margin-left: 105px;
+    background-color: transparent;
+    color: beige;
+    line-height: 22px;
+    position: relative;
+    max-width: 65%;
+}
+
+.cover-image {
+    max-width: 100%;
+    width: 100%;
+}
+
+
+.select-number {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    font-family: "Orbitron";
+}
+
+.button-style {
+    border: 0.5px solid #5e1da1;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    color: beige;
+    line-height: 30px;
+    font-weight: bold;
+    position: relative;
+}
+
+.button-style:before {
+    top: -2px;
+    left: -2px;
+    border-top: 2px solid #8f5dc3;
+    border-left: 2px solid #8f5dc3;
+}
+
+.button-style:after {
+    top: -2px;
+    right: -2px;
+    border-top: 2px solid #8f5dc3;
+    border-right: 2px solid #8f5dc3;
+}
+
+.button-common {
+    padding: 10px 20px;
+    font-size: 18px;
+    width: auto;
+}
+
+.button-number {
+    padding: 40px;
+    margin: 10px 20px;
+    font-size: 30px;
+    width: 25%;
+    background-image: radial-gradient(#00000042, #41087a);
+}
+
+.button-span:before {
+    bottom: -2px;
+    left: -2px;
+    border-bottom: 2px solid #8f5dc3;
+    border-left: 2px solid #8f5dc3;
+}
+
+.button-span:after {
+    bottom: -2px;
+    right: -2px;
+    border-bottom: 2px solid #8f5dc3;
+    border-right: 2px solid #8f5dc3;
+}
+
+.button-style:before,
+.button-style:after,
+.button-span:before,
+.button-span:after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    transition: 1s;
+}
+
+.button-style:hover {
+    transform: scale(1.1);
+    color: inherit;
 }
 
 .division-three {
     margin: 20px;
     padding: 10px;
-    height: 220px;
+    height: 200px;
     width: 30%;
     color: #00031CFF;
     opacity: 0.8;
@@ -86,7 +193,7 @@
     padding: 10px;
     background-color: #F5E5DCFF;
     width: 46%;
-    height: 300px;
+    height: 380px;
     float: left;
     color: #00031CFF;
     opacity: 0.8;

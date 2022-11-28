@@ -8,7 +8,7 @@ $(document).ready(function () {
 
         //timeout for verify_player.js to fetch the contract
         setTimeout(async function () {
-            console.log(owner)
+            owner = await contract.methods.owner().call()
 
             if (account[0] === owner) {
                 document.getElementById('only-owner').style.display = 'block'
@@ -52,7 +52,10 @@ async function getContractDetails() {
 async function getPlayerDetails() {
     if (counter === "1") {
         document.getElementById('no-players').style.display = 'block'
+        document.getElementById('player-address').style.display = 'none'
+        document.getElementById('player-selection').style.display = 'none'
     } else {
+        document.getElementById('no-players').style.display = 'none'
         document.getElementById('player-address').style.display = 'block'
         document.getElementById('player-selection').style.display = 'block'
         for (let i = 1; i < counter; i++) {
@@ -64,7 +67,7 @@ async function getPlayerDetails() {
 
         for (let i = 1; i < counter; i++) {
             $('#player-address').append("<p>" + players[i] + "</p>")
-            $('#player-number').append("<p>" + selectedNumbers[i] + "</p>")
+            $('#player-selection').append("<p>" + selectedNumbers[i] + "</p>")
         }
     }
 }
@@ -83,6 +86,8 @@ async function getWinnerDetails() {
     } else {
         $('#div-winner-list').append("<p>Nobody guessed the winning number</p><p>No winners for the previous round</p>")
     }
+
+    $('#contract-link').empty().append("<br><div class='division-two-child'><a href='https://goerli.etherscan.io/address/" + contractAddress + "' target='_blank'>Click here</a> for more details</div>")
 }
 
 async function endGame() {
@@ -145,7 +150,7 @@ async function endGame() {
 
 async function closeGameState() {
 
-    contract.methods.closeGameState().send({'from': owner})
+    await contract.methods.closeGameState().send({'from': owner})
         .on('transactionHash', function (hash) {
             Swal.fire({
                 title: 'Closing the game state',
@@ -241,7 +246,7 @@ async function selectWinner() {
 
 async function callEndGameFromContract() {
     //call endgame function
-    contract.methods.endGame(winners, winningNumber).send({'from': owner})
+    await contract.methods.endGame(winners, winningNumber).send({'from': owner})
         .on('transactionHash', function (hash) {
             document.getElementById('end-game-body').style.pointerEvents = 'auto'
             Swal.fire({
@@ -324,10 +329,9 @@ async function callEndGameFromContract() {
     });
 }
 
-
 window.setInterval(async () => {
     const currentOwner = await contract.methods.owner().call()
-    console.log(owner, currentOwner)
+    // console.log(owner, currentOwner)
 
     if (currentOwner !== owner) {
         owner = currentOwner
@@ -335,14 +339,26 @@ window.setInterval(async () => {
     }
 
     const currentCounter = await contract.methods.counter().call()
-    console.log(counter, currentCounter)
+    // console.log(counter, currentCounter)
 
     if (counter !== currentCounter) {
         counter = currentCounter
         await getWinningAmount()
         await getGameDetails()
         await getPlayerDetails()
+    }
+
+    const currentGameState = await contract.methods.game_state().call()
+
+    if (currentGameState !== gameState){
+        await getGameDetails()
         await getWinnerDetails()
     }
 
-}, 5000)
+    const newWinners = await contract.methods.getWinnersList().call()
+
+    if (winners.toString() !== newWinners.toString()){
+        await getWinnerDetails()
+    }
+
+}, 15000)
