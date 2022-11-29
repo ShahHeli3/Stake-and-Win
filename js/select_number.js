@@ -18,13 +18,11 @@ async function select_number(selected_number) {
     document.getElementById('number-buttons').style.pointerEvents = 'none'
     Swal.fire({
         title: 'Confirm your selection',
-        text: 'Please confirm your selection',
+        text: 'Are you sure you want to stake on ' + selected_number + ' ?',
         confirmButtonText: 'Stake on ' + selected_number,
         icon: 'question',
         showDenyButton: true,
         denyButtonText: 'Change Selection',
-        confirmButtonColor: '#4B983BFF',
-        denyButtonColor: '#E53F3FFF',
         allowOutsideClick: false,
         allowEscapeKey: false,
         allowEnterKey: false,
@@ -43,7 +41,7 @@ async function select_number(selected_number) {
                     Swal.fire({
                         title: 'Adding you to the game',
                         html: `Your transaction is pending...<br>Please wait till we add you to the game.<br>Do not close this page.` +
-                            `<br>Click <a href="https://goerli.etherscan.io/tx/${hash}" target="_blank">here</a> to view your transaction`,
+                            `<br>Click <a style="color: #8f5dc3; font-style: italic" href="https://goerli.etherscan.io/tx/${hash}" target="_blank">here</a> to view your transaction`,
                         icon: 'info',
                         showConfirmButton: false,
                         allowOutsideClick: false,
@@ -58,11 +56,10 @@ async function select_number(selected_number) {
                         Swal.fire({
                             title: 'Transaction successful',
                             html: `Congratulations!!! <br>Your transaction was successful.<br>You are added to the game.` +
-                                `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
+                                `<br>Click <a style="color: #8f5dc3; font-style: italic" href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                             imageUrl: "../static/images/success.png",
                             imageHeight: '70px',
                             confirmButtonText: 'See Game Status',
-                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             allowEnterKey: false,
@@ -74,9 +71,8 @@ async function select_number(selected_number) {
                         Swal.fire({
                             title: 'Transaction Error',
                             html: `Oops! There was some error in completing your transaction.<br>Please select a number again` +
-                                `<br>Click <a href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
+                                `<br>Click <a style="color: #8f5dc3; font-style: italic" href="https://goerli.etherscan.io/tx/${receipt.transactionHash}" target="_blank">here</a> to view your transaction`,
                             icon: 'error',
-                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             allowEnterKey: false,
@@ -94,7 +90,6 @@ async function select_number(selected_number) {
                             title: 'Transaction Rejected',
                             text: 'You need to confirm the transaction to enter the game.',
                             icon: 'error',
-                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             allowEnterKey: false,
@@ -109,7 +104,6 @@ async function select_number(selected_number) {
                             title: 'Transaction Error',
                             html: 'Oops! There was some error in completing your transaction.<br>Please select a number again',
                             icon: 'error',
-                            confirmButtonColor: '#4B983BFF',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             allowEnterKey: false,

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="html-style">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,15 +11,10 @@
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/end_game.js"></script>
 </head>
 
-<body class="background center" id="end-game-body">
+<body class="background " id="end-game-body">
 
 <!--navigation bar-->
 <nav class="navbar navbar-inverse navbar-style">
@@ -46,77 +41,116 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="how_to_play.html">How to play?</a></li>
                 <li><a href="about_game.html">About</a></li>
+                <li class="active"><a href="end_game.html">See Game Status</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="only-owner" style="display: none">
                 <li><a href="transfer_ownership.html">Transfer Ownership</a></li>
                 <li><a href="set_game_fee.html">Update Entry Fee</a></li>
                 <li>
-                    <button id="end-game-btn" class="btn btn-style" onclick="endGame()">End Game</button>
+                    <button id="end-game-btn" class="btn button-style button-common" onclick="endGame()">
+                        <span class="button-span">End Game</span></button>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
 
-<h2 id="game-open-message">The game will end any time...</h2>
-<h2 id="game-end-message" style="display: none">Game Ended. Calculating Winners...</h2>
-<br>
+<h2 id="game-open-message" class="title center">The game will end any time...</h2>
+<h2 id="game-end-message" style="display: none" class="title">Game Ended. Calculating Winners...</h2>
 
-<div>
-    <div class="division-three odd">
-        <h3><u>Winning Amount</u></h3>
-        <br>
-        <div id="winning-amount">
-            <!-- winning amount details -->
+<div class="custom-row-end-game">
+    <div class="custom-col-end-game custom-col-left">
+        <div class="border-bottom">
+            <div class="text-col">
+                <h3>Winning Amount</h3>
+                <div id="winning-amount">
+                    <!-- winning amount details -->
+                </div>
+            </div>
+            <div class="image-col">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="custom-col-end-game custom-col-center">
+        <div class="border-bottom">
+            <div class="text-col">
+                <h3>Game Status</h3>
+                <div id="game-details">
+                    <!-- game details -->
+                </div>
+            </div>
+            <div class="image-col">
+
+            </div>
         </div>
     </div>
 
-    <div class="division-three even">
-        <h3><u>Game Status</u></h3>
-        <br>
-        <div id="game-details">
-            <!-- game details -->
-        </div>
-    </div>
+    <div class="custom-col-end-game custom-col-right">
+        <div class="border-bottom">
+            <div class="text-col">
+                <h3>Contract Details</h3>
+                <div id="contract-details">
+                    <!-- contract details -->
+                </div>
+            </div>
+            <div class="image-col">
 
-    <div class="division-three odd">
-        <h3><u>Contract Details</u></h3>
-        <br>
-        <div id="contract-details">
-            <!-- contract details -->
+            </div>
         </div>
     </div>
 </div>
 
-<div class="division-two" id="player-details">
-    <h3><u>Players in the current round</u></h3>
-    <br>
-    <div class="division-two-child" id="no-players" style="display: none">
-        <h4>Nobody has joined the game yet</h4>
+<div class="custom-row-end-game">
+    <div class="custom-col-end-game custom-col-bottom">
+        <div class="border-bottom">
+            <h3 class="title center">Players in the current round</h3>
+            <br>
+            <div class="details" id="no-players" style="display: none">
+                <h4>Nobody has joined the game yet</h4>
+            </div>
+            <div class="details player-details" id="player-details">
+                <table style="width: 100%" class="end-game-details" id="player-details-table">
+                    <!--players' details-->
+                </table>
+            </div>
+        </div>
+
     </div>
-    <div class="division-two-child division-two-left" id="player-address" style="display: none">
-        <!-- players' addresses -->
-        <p><b>Player's Address</b></p>
-    </div>
-    <div class="division-two-child division-two-right" id="player-selection" style="display: none">
-        <!-- players' selected numbers -->
-        <p><b>Selected Number</b></p>
+    <div class="custom-col-end-game custom-col-bottom" id="winners">
+        <div class="border-bottom">
+            <h3 class="title center">Previous Game's Results</h3>
+            <br>
+            <div class="details">
+                <h4>Winning Number: <span id="div-winning-number"></span></h4>
+            </div>
+            <br>
+            <div class="details winner-details" id="winner-details">
+                <h4>Winner/s</h4>
+                <div id="div-winner-list" style="width: 100%">
+                    <!-- winners' list -->
+                </div>
+            </div>
+            <br>
+            <div class="details" id="contract-link">
+                <h4><a href='https://goerli.etherscan.io/address/0x512cB88607C80cC747633e4bdcd2d376b943D70C'
+                       target='_blank' style="color: #8f5dc3">
+                    <i>Click here</i></a> for more details.
+                </h4>
+            </div>
+        </div>
+
     </div>
 </div>
-<div class="division-two" id="winners">
-    <h3><u>Previous Game's Results</u></h3>
-    <br>
-    <div class="division-two-child" id="div-winning-number">
-        <!-- winning number -->
-    </div>
-    <br>
-    <div class="division-two-child" id="div-winner-list">
-        <!-- winners' list -->
-    </div>
-    <br>
-    <div class="division-two-child" id="contract-link">
-        <!-- contract transactions link -->
-    </div>
-</div>
+
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/end_game.js"></script>
+
 </body>
 </html>

@@ -6,7 +6,6 @@ $(document).ready(function () {
                 html: 'Sorry!<br>This round has been closed!<br>Try again after sometime',
                 icon: 'info',
                 confirmButtonText: 'See Game Status',
-                confirmButtonColor: '#4B983BFF',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 allowEnterKey: false,

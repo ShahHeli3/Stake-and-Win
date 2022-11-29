@@ -11,7 +11,7 @@ $(document).ready(function () {
                 const minimumBal = gameEntryFee / Math.pow(10, 18)
 
                 document.getElementById('stake-ether').append("Game Fee: " + minimumBal + " Eth")
-                document.getElementById('note').append(minimumBal + " Eth")
+                document.getElementById('note').append(minimumBal + " Eth !")
 
                 account = await web3.eth.getAccounts()
                 if (account.length > 0) {
@@ -60,7 +60,6 @@ async function connectWallet() {
                     title: 'Connection Rejected',
                     text: 'You need to connect your MetaMask wallet to play the game',
                     icon: 'error',
-                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
@@ -74,7 +73,6 @@ async function connectWallet() {
                     title: 'Request Pending',
                     html: 'There is already a request pending in your MetaMask.<br>Please accept it',
                     icon: 'info',
-                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
@@ -87,7 +85,6 @@ async function connectWallet() {
                     title: 'Connection Error',
                     html: 'There was some error in connecting your wallet.<br>Please try again.',
                     icon: 'error',
-                    confirmButtonColor: '#4B983BFF',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="html-style">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,6 +43,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Home</a></li>
                 <li><a href="how_to_play.html">How to play?</a></li>
                 <li><a href="about_game.html">About</a></li>
                 <li><a href="end_game.html">See Game Status</a></li>
@@ -55,27 +56,27 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="custom-row">
-    <div class="custom-left-col">
+<div class="custom-row-home">
+    <div class="custom-left-col-home">
         <div class="cover-box">
             <div>
                 <h1 class="title"><b>Welcome to <i>Stake And Win</i></b></h1>
-                <h2>It's all about luck...</h2>
+                <h3>It's all about luck...</h3>
+                <p class="text-style">Stake eth just equal to the game fee and have a chance to multiply it!</p>
                 <br>
-                <h4>Stake eth just equal to the game fee and have a chance to multiply it!</h4>
-                <h4>Try your luck..</h4>
-                <h5 id="stake-ether"></h5>
+                <p class="text-style">Try your luck...</p>
+                <p id="stake-ether" class="text-style"></p>
             </div>
             <br>
 
             <!--if metamask extension is not there in the browser -->
             <div id="metamask-extension-not-installed" style="display: none">
-                <h3>Please add MetaMask Extension to your Browser</h3>
+                <p class="text-style">Please add MetaMask Extension to your Browser.</p>
             </div>
 
             <!--connect wallet if the extension is there-->
             <div id="connect-wallet">
-                <h4>Please connect your MetaMask wallet to join the game</h4>
+                <h4>Please connect your MetaMask wallet to join the game.</h4>
                 <br>
                 <button id="connect-wallet-btn" class="btn button-style button-common" onclick="connectWallet()">
                     <span class="button-span">Connect Wallet</span></button>
@@ -83,24 +84,24 @@
 
             <!--join game after connecting the wallet successfully-->
             <div id="join-game" style="display: none">
-                <div>
+                <div class="text-style">
                     Connected Wallet :
-                    <p id="connected-wallet"></p>
+                    <p id="connected-wallet" style="margin-top: 8px"></p>
                 </div>
-                <div style="margin-top: 30px">
+                <div style="margin-top: 30px" class="text-style">
                     Wallet Balance :
-                    <p id="wallet-balance"></p>
+                    <p id="wallet-balance" style="margin-top: 8px"></p>
                 </div>
                 <br>
                 <button id="play-game-btn" class="btn button-style button-common" onclick="playGame()">
                     <span class="button-span">Play the Game</span>
                 </button>
                 <br><br>
-                <h4 id="note">NOTE: Your balance should be greater than </h4>
+                <p id="note" class="text-style">NOTE: Your balance should be greater than </p>
             </div>
         </div>
     </div>
-    <div class="custom-right-col">
+    <div class="custom-right-col-home">
         <img src="../static/images/BGDesign.png" class="cover-image">
     </div>
 </div>

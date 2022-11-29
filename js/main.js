@@ -28,3 +28,8 @@ window.ethereum.on('accountsChanged', async function () {
 window.ethereum.on('chainChanged', function (_chainId) {
     window.location.replace('../html/index.html')
 })
+
+$(document).ready(function() {
+    // $("#player-details-body, #winner-details").niceScroll({cursorwidth: '8px', autohidemode: true, zindex: 999,
+    //     cursorcolor: "#3f215d", cursorborder: "0.5px solid #5e1da1" });
+});
