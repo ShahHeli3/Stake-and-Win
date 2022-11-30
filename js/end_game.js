@@ -50,8 +50,6 @@ async function getContractDetails() {
 }
 
 async function getPlayerDetails() {
-    counter = 10
-
     if (counter === "1") {
         document.getElementById('no-players').style.display = 'block'
         document.getElementById('player-details').style.display = 'none'
