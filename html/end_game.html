@@ -60,7 +60,7 @@
 
 <div class="custom-row-end-game">
     <div class="custom-col-end-game custom-col-left">
-        <div class="border-bottom">
+        <div class="border-bottom custom-flex">
             <div class="text-col">
                 <h3>Winning Amount</h3>
                 <div id="winning-amount">
@@ -68,14 +68,14 @@
                 </div>
             </div>
             <div class="image-col">
-
+                <img src="../static/images/winningAmount.png" class="image-icon" alt="Winning amount icon">
             </div>
         </div>
 
     </div>
 
     <div class="custom-col-end-game custom-col-center">
-        <div class="border-bottom">
+        <div class="border-bottom custom-flex">
             <div class="text-col">
                 <h3>Game Status</h3>
                 <div id="game-details">
@@ -83,13 +83,13 @@
                 </div>
             </div>
             <div class="image-col">
-
+                <img src="../static/images/gameDetails.png" class="image-icon" alt="Game Details icon">
             </div>
         </div>
     </div>
 
     <div class="custom-col-end-game custom-col-right">
-        <div class="border-bottom">
+        <div class="border-bottom custom-flex">
             <div class="text-col">
                 <h3>Contract Details</h3>
                 <div id="contract-details">
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <div class="image-col">
-
+                <img src="../static/images/contractDetails.png" class="image-icon" alt="Contract Details icon">
             </div>
         </div>
     </div>
@@ -109,11 +109,19 @@
             <h3 class="title center">Players in the current round</h3>
             <br>
             <div class="details" id="no-players" style="display: none">
-                <h4>Nobody has joined the game yet</h4>
+                <h3 class="center" style="padding-top: 67px">Nobody has joined the game yet</h3>
             </div>
-            <div class="details player-details" id="player-details">
+            <div class="details player-details" id="player-details" style="display: none">
                 <table style="width: 100%" class="end-game-details" id="player-details-table">
+                    <thead>
+                    <tr class="table-header">
+                        <th style="width: 75%">Player's Address</th>
+                        <th style="width: 25%">Selected Number</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-body">
                     <!--players' details-->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -126,14 +134,12 @@
             <div class="details">
                 <h4>Winning Number: <span id="div-winning-number"></span></h4>
             </div>
-            <br>
-            <div class="details winner-details" id="winner-details">
+            <div class="details" id="winner-details">
                 <h4>Winner/s</h4>
-                <div id="div-winner-list" style="width: 100%">
+                <div id="div-winner-list" style="width: 100%" class="winner-details">
                     <!-- winners' list -->
                 </div>
             </div>
-            <br>
             <div class="details" id="contract-link">
                 <h4><a href='https://goerli.etherscan.io/address/0x512cB88607C80cC747633e4bdcd2d376b943D70C'
                        target='_blank' style="color: #8f5dc3">
@@ -148,7 +154,9 @@
 <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.5.1/jquery.nicescroll.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"
+        integrity="sha512-zMfrMAZYAlNClPKjN+JMuslK/B6sPM09BGvrWlW+cymmPmsUT1xJF3P4kxI3lOh9zypakSgWaTpY6vDJY/3Dig=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../js/main.js"></script>
 <script src="../js/end_game.js"></script>
 

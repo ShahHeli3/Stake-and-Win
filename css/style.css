@@ -210,6 +210,10 @@
     width: 100%;
 }
 
+.custom-flex {
+    display: flex;
+}
+
 .custom-col-end-game:before,
 .custom-col-end-game:after,
 .border-bottom:before,
@@ -236,6 +240,16 @@
 
 .image-col {
     width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 35px;
+}
+
+.image-icon {
+    height: 95px;
+    width: 95px;
+
 }
 
 .text-col {
@@ -263,13 +277,24 @@
     line-height: 35px;
 }
 
-.player-details {
-    max-height: 268px;
-    overflow-y: auto;
+thead, tbody tr {
+    display: table;
+    width: 100%;
+}
+
+thead {
+    margin-bottom: 10px;
+}
+
+tbody {
+    overflow: visible;
+    max-height: 200px ;
+    display: block;
+    width: 100%;
 }
 
 .table-header:after {
-    background-color: beige;
+    background-color: #9a9a9769;;
     content: "";
     display: inline-block;
     height: 1px;
@@ -281,10 +306,10 @@
 }
 
 .winner-details {
-    overflow-y: auto;
+    overflow: visible;
     font-size: 15px;
     line-height: 17px;
-    max-height: 120px;
+    height: 108px;
 }
 
 /*sweet alerts*/

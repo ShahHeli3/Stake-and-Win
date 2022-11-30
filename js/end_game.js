@@ -17,16 +17,16 @@ $(document).ready(function () {
             await getWinningAmount()
             await getGameDetails()
             await getContractDetails()
-            await getPlayerDetails()
             await getWinnerDetails()
+            await getPlayerDetails()
         }, 2000)
     }
 )
 
 async function getWinningAmount() {
     let contractBalance = await web3.eth.getBalance(contractAddress)
-    // let winning_amount = ((contractBalance * 80) / 100)
-    let winning_amount = 100000000000000
+    let winning_amount = ((contractBalance * 80) / 100)
+
     $('#winning-amount').empty().append('<p><b>Winning amount in wei: </b><br>' + winning_amount + '</p>' +
         '<p><b>Winning amount in eth: </b><br>' + winning_amount * (10 ** (-18)) + '</p>')
 }
@@ -59,37 +59,13 @@ async function getPlayerDetails() {
         document.getElementById('no-players').style.display = 'none'
         document.getElementById('player-details').style.display = 'block'
 
-        // players = ['', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312']
-        // selectedNumbers = ['', '1', '2', '1', '2', '1', '2', '1', '2', '1', '2']
-
-        // $('#player-details-table').empty().append('<tr class="table-header"><th style="width: 75%">Player\'s Address</th>' +
-        //     '<th style="width: 25%">Selected Number</th></tr><tbody id="player-details-body">')
-        let tableObj = '<thead><tr class="table-header"><th style="width: 75%">Player\'s Address</th>' +
-            '<th style="width: 25%">Selected Number</th></tr></thead><tbody id="player-details-body">';
+        $("#table-body").empty()
 
         for (let i = 1; i < counter; i++) {
             players[i] = await contract.methods.players(i).call()
             selectedNumbers[i] = await contract.methods.guessedNumber(i).call()
-            // $('#player-details-table').append("<tr><td>" + players[i] + "</td><td>" + selectedNumbers[i] + "</td>")
-            tableObj += "<tr><td>" + players[i] + "</td><td>" + selectedNumbers[i] + "</td>";
+            $('#table-body').append("<tr><td style='width: 80%'>" + players[i] + "</td><td style='width: 20%'>" + selectedNumbers[i] + "</td>")
         }
-        tableObj +="</tbody>";
-
-        console.log(tableObj);
-
-        $('#player-details-table').append(tableObj);
-
-            $("#player-details-body, #winner-details").niceScroll({cursorwidth: '8px', autohidemode: true, zindex: 999,
-        cursorcolor: "#3f215d", cursorborder: "0.5px solid #5e1da1" });
-
-        // console.log(players)
-        // console.log(selectedNumbers)
-        //
-        // $('#player-details-table').empty().append('<tr><th style="width: 75%">Player\'s Address</th>' +
-        //     '<th style="width: 25%">Selected Number</th></tr>')
-        // for (let i = 1; i < counter; i++) {
-        //     $('#player-details-table').append("<tr><td>" + players[i] + "</td><td>" + selectedNumbers[i] + "</td>")
-        // }
     }
 }
 
@@ -99,8 +75,6 @@ async function getWinnerDetails() {
 
     winners = await contract.methods.getWinnersList().call()
     $('#div-winner-list').empty()
-
-    winners = ['0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312', '0xE293f396675C8522d012850B440501576771A312']
 
     if (winners.length > 0) {
         for (let i = 0; i < winners.length; i++) {
@@ -339,36 +313,46 @@ async function callEndGameFromContract() {
         });
 }
 
-// window.setInterval(async () => {
-//     const currentOwner = await contract.methods.owner().call()
-//     // console.log(owner, currentOwner)
-//
-//     if (currentOwner !== owner) {
-//         owner = currentOwner
-//         await getContractDetails()
-//     }
-//
-//     const currentCounter = await contract.methods.counter().call()
-//     // console.log(counter, currentCounter)
-//
-//     if (counter !== currentCounter) {
-//         counter = currentCounter
-//         await getWinningAmount()
-//         await getGameDetails()
-//         await getPlayerDetails()
-//     }
-//
-//     const currentGameState = await contract.methods.game_state().call()
-//
-//     if (currentGameState !== gameState) {
-//         await getGameDetails()
-//         await getWinnerDetails()
-//     }
-//
-//     const newWinners = await contract.methods.getWinnersList().call()
-//
-//     if (winners.toString() !== newWinners.toString()) {
-//         await getWinnerDetails()
-//     }
-//
-// }, 15000)
+//custom scroll bar
+$(document).ready(function () {
+    $("#table-body, #div-winner-list").niceScroll(
+        {
+            cursorwidth: '4px',
+            autohidemode: false,
+            zindex: 999,
+            cursorcolor: "#3f215d",
+            cursorborder: "transparent"
+        });
+});
+
+
+window.setInterval(async () => {
+    const currentOwner = await contract.methods.owner().call()
+
+    if (currentOwner !== owner) {
+        owner = currentOwner
+        await getContractDetails()
+    }
+
+    const currentCounter = await contract.methods.counter().call()
+
+    if (counter < currentCounter) {
+        counter = currentCounter
+        await getWinningAmount()
+        await getGameDetails()
+        await getPlayerDetails()
+    }
+
+    if (counter > currentCounter) {
+        counter = currentCounter
+        await getWinnerDetails()
+    }
+
+    const currentGameState = await contract.methods.game_state().call()
+
+    if (currentGameState !== gameState) {
+        await getGameDetails()
+        await getWinnerDetails()
+    }
+
+}, 15000)

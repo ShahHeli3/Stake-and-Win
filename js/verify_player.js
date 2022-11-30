@@ -23,7 +23,6 @@ $(document).ready(function () {
 })
 
 async function verifyPlayer() {
-    console.log("verify")
     for (let i = 1; i < counter; i++) {
         let player = await contract.methods.players(i).call()
 
