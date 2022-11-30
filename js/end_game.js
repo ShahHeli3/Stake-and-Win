@@ -2,7 +2,6 @@ let selectedNumbers = []
 let players = []
 let winners = []
 let winningNumber = null
-let autoReload = true
 
 $(document).ready(function () {
 
@@ -13,7 +12,6 @@ $(document).ready(function () {
             if (account[0] === owner) {
                 document.getElementById('only-owner').style.display = 'block'
             }
-
             await getWinningAmount()
             await getGameDetails()
             await getContractDetails()
@@ -62,6 +60,9 @@ async function getPlayerDetails() {
         for (let i = 1; i < counter; i++) {
             players[i] = await contract.methods.players(i).call()
             selectedNumbers[i] = await contract.methods.guessedNumber(i).call()
+        }
+
+        for (let i = 1; i < counter; i++) {
             $('#table-body').append("<tr><td style='width: 80%'>" + players[i] + "</td><td style='width: 20%'>" + selectedNumbers[i] + "</td>")
         }
     }
@@ -84,8 +85,8 @@ async function getWinnerDetails() {
 }
 
 async function endGame() {
-    autoReload = false
     document.getElementById('end-game-btn').style.pointerEvents = 'none'
+    document.getElementById('end-game-nav').style.pointerEvents = 'none'
 
     //only owner can end the game
     if (account[0] !== owner) {
@@ -218,21 +219,26 @@ async function closeGameState() {
 }
 
 async function selectWinner() {
+    let newWinners = []
+    let newWinningNumber = null
+
     let randomNumber = Math.floor(Math.random() * 10) + 1;
-    winningNumber = randomNumber.toString()
+    newWinningNumber = randomNumber.toString()
 
     //selecting winners
     for (let i = 1; i < counter; i++) {
-        if (selectedNumbers[i] === winningNumber) {
-            winners.push(players[i])
+        if (selectedNumbers[i] === newWinningNumber) {
+            newWinners.push(players[i])
         }
     }
-    await callEndGameFromContract()
+
+    await callEndGameFromContract(newWinners, randomNumber)
 }
 
-async function callEndGameFromContract() {
+
+async function callEndGameFromContract(newWinners, newWinningNumber) {
     //call endgame function
-    await contract.methods.endGame(winners, winningNumber).send({'from': owner})
+    await contract.methods.endGame(newWinners, newWinningNumber).send({'from': owner})
         .on('transactionHash', function (hash) {
             document.getElementById('end-game-body').style.pointerEvents = 'auto'
             Swal.fire({
@@ -343,14 +349,17 @@ window.setInterval(async () => {
 
     if (counter > currentCounter) {
         counter = currentCounter
+        await getGameDetails()
         await getWinnerDetails()
+        await getWinningAmount()
+        await getPlayerDetails()
     }
 
     const currentGameState = await contract.methods.game_state().call()
 
     if (currentGameState !== gameState) {
+        gameState = currentGameState
         await getGameDetails()
-        await getWinnerDetails()
     }
 
-}, 15000)
+}, 10000)
