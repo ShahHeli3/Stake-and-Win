@@ -223,7 +223,7 @@ async function closeGameState() {
 
 async function selectWinner() {
     let newWinners = []
-    let newWinningNumber = null
+    let newWinningNumber
 
     let randomNumber = Math.floor(Math.random() * 10) + 1;
     newWinningNumber = randomNumber.toString()
