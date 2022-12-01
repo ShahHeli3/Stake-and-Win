@@ -4,6 +4,9 @@ let winners = []
 let winningNumber = null
 
 $(document).ready(function () {
+        if (!window.ethereum) {
+            window.location.replace("../html/index.html")
+        }
 
         //timeout for verify_player.js to fetch the contract
         setTimeout(async function () {

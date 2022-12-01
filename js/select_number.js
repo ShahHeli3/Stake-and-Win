@@ -2,6 +2,9 @@ let playerAddress = null
 let gameEntryFee = null
 
 $(document).ready(function () {
+        if (!window.ethereum) {
+            window.location.replace("../html/index.html")
+        }
         //timeout for verify_player.js to fetch the contract
         setTimeout(async function () {
             if (account.length === 0) {
